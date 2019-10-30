@@ -79,6 +79,9 @@ There are four classes derived from the Contour base class
 3) ContourPolygon
 4) thresholdContour
 
+The **static cvFactoryRegistrar gRegistrar** class data is used to 
+
+
 
 **Contour**
 ```
@@ -86,6 +89,8 @@ class SV_EXPORT_SEGMENTATION Contour : public cvRepositoryData
 {
   public:
     struct svLSParam { double ctrx; double ctry; double ctrz; ... }
+    
+    static cvFactoryRegistrar gRegistrar;
       
     virtual std::string GetClassName();
     virtual void SetControlPoint(int index, std::array<double,3> point);
@@ -164,6 +169,37 @@ class SV_EXPORT_SEGMENTATION thresholdContour : public Contour
 }
 ```
 
+## cvFactoryRegistrar
+
+This is used in
+```
+sv/Mesh/AdaptObject/sv_AdaptObject.h:    static cvFactoryRegistrar gRegistrar;
+sv/Mesh/AdaptObject/sv_adapt_init_py.h:  cvFactoryRegistrar* registrar;
+sv/Model/SolidModel/sv_SolidModel.h:     static cvFactoryRegistrar gRegistrar;
+sv/Model/SolidModel/sv_solid_init_py.h:  cvFactoryRegistrar* registrar;
+sv3/Segmentation/sv3_Contour_init_py.h:  cvFactoryRegistrar* registrar;
+sv3/Segmentation/sv3_Contour.h:          static cvFactoryRegistrar gRegistrar;
+```
+
+
+
+
+```
+class SV_EXPORT_UTILS cvFactoryRegistrar {
+  public:
+    cvFactoryRegistrar();
+
+    FactoryMethodPtr GetFactoryMethodPtr( int factory_type );
+    void SetFactoryMethodPtr( int factory_type, FactoryMethodPtr factory_ptr );
+
+    // Returns a pointer to whatever you've created with a factory
+    void* UseFactoryMethod( int factory_type );
+
+  protected:
+    FactoryMethodPtr factoryMethodPtrs[CV_MAX_FACTORY_METHOD_PTRS];
+
+};
+```
 
 
 # Current Design
@@ -178,3 +214,33 @@ API types are defined for:
 * SolidModel - cvSolidModel* geom
 
 These types just store a reference to an SV object (all called geom!). 
+
+## Contour Base and Derived Classes
+
+Drived classes constructors are set and accessed from the **ContourObjectRegistrar** PyObject using
+```
+ PyObject* pyGlobal = PySys_GetObject("ContourObjectRegistrar");
+```
+
+Each derived class module sets it constuctor in its **PyMODINIT_FUNC** function
+```
+contourObjectRegistrar->SetFactoryMethodPtr( cKERNEL_CIRCLE, (FactoryMethodPtr) &CreateCircleContour );
+contourObjectRegistrar->SetFactoryMethodPtr( cKERNEL_LEVELSET, (FactoryMethodPtr) &CreatelevelSetContour );
+contourObjectRegistrar->SetFactoryMethodPtr( cKERNEL_SPLINEPOLYGON, (FactoryMethodPtr)&CreateSplinePolygonContour);
+```
+
+A Contour object is created using the following steps
+```
+sv.contour.set_contour_kernel('Circle')
+cont = sv.contour.Contour()
+cont.new_object(name, path_name, index)
+```
+
+The **Contour.new_object()** method calls **sv3::Contour::DefaultInstantiateContourObject()** to create a new Contour derived objecy using
+```
+PyObject* pyGlobal = PySys_GetObject("ContourObjectRegistrar");
+contour = (Contour*)gRegistrar.UseFactoryMethod(t);
+```
+
+
+
