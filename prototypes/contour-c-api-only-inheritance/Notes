@@ -1,0 +1,13 @@
+
+- don't use setup.py
+
+  + build with just make 
+
+
+- Shared library name must match the module name.
+
+  lib = contour.so
+
+- the __init__.py is not called.
+
+
