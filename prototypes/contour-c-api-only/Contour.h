@@ -19,6 +19,7 @@ class Contour {
 
   public:
     Contour() {};
+    ~Contour();
 
     void AddControlPoint(std::array<double,3> point);
 

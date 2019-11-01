@@ -9,10 +9,16 @@
 #include "Contour.h"
 #include <Python.h>
 
+//---------------
+// ContourObject
+//---------------
+// Define the Contour class (type).
+//
 typedef struct {
   PyObject_HEAD
   Contour* contour;
   int count;
+  int id;
 } ContourObject;
 
 //////////////////////////////////////////////////////
@@ -88,76 +94,90 @@ PyDoc_STRVAR(module_doc, "contour_module module functions.");
 //
 // This function is used to initialize an object after it is created.
 //
-static int ContourObjectInit(ContourObject* self, PyObject* args)
+static int ContourObjectInit(ContourObject* self, PyObject* args, PyObject *kwds)
 {
   static int numObjs = 1;
-  std::cout << "New Contour object: " << numObjs << std::endl;
+  std::cout << "[ContourObjectInit] New Contour object: " << numObjs << std::endl;
   self->count = numObjs;
   self->contour = new Contour();
   numObjs += 1;
   return 0;
 }
 
+//----------------
+// ContourMethods
+//----------------
+//
 static PyMethodDef ContourMethods[] = {
-
   { "add_control_point", (PyCFunction)Contour_add_control_point, METH_VARARGS, NULL},
-
+  {NULL,NULL}
 };
 
+//------------------
+// ContourObjectNew
+//------------------
+//
+static PyObject * 
+ContourObjectNew(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{   
+  std::cout << "[ContourObjectNew] ContourObjectNew " << std::endl;
+  auto self = (ContourObject*)type->tp_alloc(type, 0);
+  if (self != NULL) {
+      self->id = 1;
+  }
+
+  return (PyObject *) self;
+}
+
+//---------------------
+// ContourObjectDelete
+//---------------------
+//
+static void 
+ContourObjectDealloc(ContourObject* self)
+{
+    delete self->contour;
+    Py_TYPE(self)->tp_free(self);
+}
 
 //------------------------------------
 // Define the ContourType type object
 //------------------------------------
-// The type object stores a large number of values, mostly C function pointers, 
-// each of which implements a small part of the type’s functionality.
+// Define the Python type object that stores Contour data. 
+//
+// Only set the fields we need, the remaining fields will be filled 
+// with zeros by the compiler.
 //
 static PyTypeObject ContourType = {
+
   PyVarObject_HEAD_INIT(NULL, 0)
-  "contour.Contour",         /* tp_name */
-  sizeof(ContourObject),     /* tp_basicsize */
-  0,                         /* tp_itemsize */
-  0,                         /* tp_dealloc */
-  0,                         /* tp_print */
-  0,                         /* tp_getattr */
-  0,                         /* tp_setattr */
-  0,                         /* tp_compare */
-  0,                         /* tp_repr */
-  0,                         /* tp_as_number */
-  0,                         /* tp_as_sequence */
-  0,                         /* tp_as_mapping */
-  0,                         /* tp_hash */
-  0,                         /* tp_call */
-  0,                         /* tp_str */
-  0,                         /* tp_getattro */
-  0,                         /* tp_setattro */
-  0,                         /* tp_as_buffer */
-  Py_TPFLAGS_DEFAULT |       /* tp_flags */
-  Py_TPFLAGS_BASETYPE,   
-  "Contour  objects",        /* tp_doc */
-  0,                         /* tp_traverse */
-  0,                         /* tp_clear */
-  0,                         /* tp_richcompare */
-  0,                         /* tp_weaklistoffset */
-  0,                         /* tp_iter */
-  0,                         /* tp_iternext */
-  ContourMethods,            /* tp_methods */
-  0,                         /* tp_members */
-  0,                         /* tp_getset */
-  0,                         /* tp_base */
-  0,                         /* tp_dict */
-  0,                         /* tp_descr_get */
-  0,                         /* tp_descr_set */
-  0,                         /* tp_dictoffset */
-  (initproc)ContourObjectInit,  /* tp_init */
-  0,                         /* tp_alloc */
-  0,                         /* tp_new */
+
+  // Dotted name that includes both the module name and 
+  // the name of the type within the module.
+  .tp_name = "contour.Contour",
+
+  .tp_basicsize = sizeof(ContourObject),
+
+  // Doc string for this type.
+  .tp_doc = "Contour  objects", 
+
+  // Object creation function, equivalent to the Python __new__() method. 
+  // The generic handler creates a new instance using the tp_alloc field.
+  .tp_new = ContourObjectNew,
+  //.tp_new = PyType_GenericNew,
+
+  .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+  .tp_init = (initproc)ContourObjectInit, 
+  .tp_dealloc = (destructor)ContourObjectDealloc,
+  .tp_methods = ContourMethods
 };
 
 //-------------------
-// createContourType
+// CreateContourType
 //-------------------
+// 
 ContourObject * 
-createContourType()
+CreateContourType()
 {
   return PyObject_New(ContourObject, &ContourType);
 }
@@ -166,7 +186,7 @@ createContourType()
 // Module methods
 //----------------
 //
-static PyMethodDef module_methods[] =
+static PyMethodDef ContourModuleMethods[] =
 {
     {"cos_func", cos_func, METH_VARARGS, "evaluate the cosine"},
 
@@ -190,7 +210,7 @@ static struct PyModuleDef ContourModule =
     MODULE_NAME, 
     module_doc,
     -1,
-    module_methods
+   ContourModuleMethods 
 };
 
 //----------------
@@ -204,12 +224,12 @@ static struct PyModuleDef ContourModule =
 PyMODINIT_FUNC
 PyInit_contour(void)
 {
-    std::cout << "Load contour module." << std::endl;
+  std::cout << "Load contour module." << std::endl;
 
-  // Create the Contour class type.
-  ContourType.tp_new = PyType_GenericNew;
+  // Setup the Contour object type.
+  //
   if (PyType_Ready(&ContourType) < 0) {
-      std::cout << "Error in pyContourType" << std::endl;
+      std::cout << "Error creating Contour type" << std::endl;
       return nullptr;
   }
 

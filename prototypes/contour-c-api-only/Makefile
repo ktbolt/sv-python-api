@@ -1,24 +1,26 @@
 
-src = Contour.cpp
+src = Contour.cpp contour_module.cpp
 obj = $(src:.cpp=.o) 
-lib = libcontour.so
-inc=-I/usr/include/python3.5m
+
+# Shared library name must match the module name.
+lib = lcontour.dylib
+lib = contour.so
+
+pdir= /usr/local/Cellar/python/3.6.5_1/Frameworks/Python.framework/Versions/3.6
+inc=-I$(pdir)/Headers
 
 flags=-std=c++11 
 flags=-std=c++11 -fPIC $(inc)
 
-libs=-L/usr/lib/python3.5m -lpython3.5m
-
-contour_module*.so: contour_module.cpp $(lib)
-	python3 setup.py build_ext --inplace
+libs=-L$(pdir)/lib -lpython3.6
 
 $(lib): $(obj)
-	g++ -shared -fPIC -o $(lib) $(obj) $(libs) $(link_flags)
+	g++ -shared -o $(lib) $(obj) $(libs) $(link_flags)
 
 .cpp.o: 
 	g++ $(flags) -c $<
 
 clean:
-	rm -f *.o *.so;
+	rm -f *.o *.so *.dylib;
 
 
