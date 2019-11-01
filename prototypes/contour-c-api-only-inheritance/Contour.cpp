@@ -13,4 +13,15 @@ Contour::AddControlPoint(std::array<double,3> point)
   m_ControlPoints.push_back(point);
 }
 
+std::string Contour::GetClassName()
+{
+  return std::string("Contour");
+}
+
+void Contour::SetCenter(std::array<double,3> center)
+{
+    m_Center = center;
+}
+
+
 

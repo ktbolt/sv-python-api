@@ -12,10 +12,10 @@ class CircleContour : public Contour {
   public:
     CircleContour() {};
     ~CircleContour();
+
+    std::string GetClassName();
     void SetRadius(double radius);
-
     double m_Radius; 
-
 };
 
 

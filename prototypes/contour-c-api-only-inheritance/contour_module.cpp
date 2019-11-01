@@ -3,45 +3,36 @@
 //
 
 #include <iostream>
+#include <map>
 #include <math.h>
 #include <string>
 
 #include "Contour.h"
 #include "CircleContour.h"
 
+#include "contour_module.h"
+
 #include <Python.h>
 
 // Exception type used by PyErr_SetString() to set the for the error indicator.
 static PyObject * PyRunTimeErrPg;
 
-//////////////////////////////////////////////////////
-//          C l a s s  D e f i n i t o n s          //
-//////////////////////////////////////////////////////
+// Define a map between contour kernel name and enum type.
+static std::map<std::string,cKernelType> kernelNameTypeMap =
+{
+    {"Circle", cKERNEL_CIRCLE},
+    {"Ellipse", cKERNEL_ELLIPSE},
+    {"LevelSet", cKERNEL_LEVELSET},
+    {"Polygon", cKERNEL_POLYGON},
+    {"SplinePolygon", cKERNEL_SPLINEPOLYGON},
+    {"Threshold", cKERNEL_THRESHOLD}
+};
 
-//---------------
-// ContourObject
-//---------------
-// Define the Contour class (type).
-//
-typedef struct {
-  PyObject_HEAD
-  Contour* contour;
-  int count;
-  int id;
-} ContourObject;
-
-//---------------------
-// CircleContourObject
-//---------------------
-// Define the CircleContour class (type).
-//
-typedef struct {
-  ContourObject super;
-  CircleContour* contour;
-  int count;
-  int id;
-} CircleContourObject;
-
+/*
+static std::vector<std::string> kernalNames =
+{
+};
+*/
 
 //////////////////////////////////////////////////////
 //          M o d u l e  F u n c t i o n s          //
@@ -75,7 +66,8 @@ cos_func(PyObject* self, PyObject* args)
 static PyObject*
 Contour_add_control_point(ContourObject* self, PyObject* args)
 {
-  auto pmsg = "[Contour::add_control_point] ";
+  auto pmsg = "[Contour_add_control_point] ";
+  std::cout << pmsg << std::endl;
   std::cout << pmsg << "Add control point ..." << std::endl;
 
   PyObject *pointArg = nullptr;
@@ -101,57 +93,47 @@ Contour_add_control_point(ContourObject* self, PyObject* args)
 
   auto contour = self->contour;
   contour->AddControlPoint(point);
+  std::cout << pmsg << "Class name: " << contour->GetClassName() << std::endl;
 
   Py_RETURN_NONE;
 }
 
+//--------------------
+// Contour_set_center 
+//--------------------
+//
 static PyObject*
-CircleContour_add_control_point(CircleContourObject* self, PyObject* args)
-{ 
-  auto pmsg = "[CircleContour::add_control_point] "; 
-  std::cout << pmsg << "Add control point ..." << std::endl;
-  
-  PyObject *pointArg = nullptr;
-  
-  if (!PyArg_ParseTuple(args, "O", &pointArg)) {
-      return nullptr;
-  }
+Contour_set_center(ContourObject* self, PyObject* args)
+{
+  auto pmsg = "[Contour_set_center] ";
+  std::cout << pmsg << std::endl;
+  std::cout << pmsg << "Set center ..." << std::endl;
 
-  if (self == nullptr) {
-      PyErr_SetString(PyRunTimeErrPg, "Self is null.");
+  PyObject *centerArg = nullptr;
+
+  if (!PyArg_ParseTuple(args, "O", &centerArg)) {
       return nullptr;
   }
 
   std::cout << pmsg << "Id: " << self->id << std::endl;
-  
-  // Get the point.
+
+  // Get the center.
   //
-  std::array<double,3> point; 
+  std::array<double,3> center;
   for (int i = 0; i < 3; i++) {
-      point[i] = PyFloat_AsDouble(PyList_GetItem(pointArg,i));
+      center[i] = PyFloat_AsDouble(PyList_GetItem(centerArg,i));
   }
-  std::cout << pmsg << "  Point: " << point[0] << "  " << point[1] << "  " << point[2] << std::endl;
-  
+  std::cout << pmsg << "  Center: " << center[0] << "  " << center[1] << "  " << center[2] << std::endl;
+
   if (self->contour == nullptr) {
       PyErr_SetString(PyRunTimeErrPg, "Contour object is null.");
       return nullptr;
   }
-  
-  auto contour = self->contour;
-  contour->AddControlPoint(point);
-  
-  Py_RETURN_NONE;
-}
 
-//--------------------------
-// CircleContour_set_radius 
-//--------------------------
-//
-static PyObject*
-CircleContour_set_radius(CircleContourObject* self, PyObject* args)
-{
-  auto pmsg = "[CircleContour::set_radius] ";
-  std::cout << pmsg << "Set radius ..." << std::endl;
+  auto contour = self->contour;
+  contour->SetCenter(center);
+  std::cout << pmsg << "Class name: " << contour->GetClassName() << std::endl;
+
   Py_RETURN_NONE;
 }
 
@@ -161,11 +143,13 @@ CircleContour_set_radius(CircleContourObject* self, PyObject* args)
 
 static const char* MODULE_NAME = "contour";
 static const char* MODULE_CONTOUR_CLASS = "Contour";
-static const char* MODULE_CIRCLE_CONTOUR_CLASS = "CircleContour";
 static const char* MODULE_EXCEPTION = "contour.ContourError";
 static const char* MODULE_EXCEPTION_OBJECT = "ContourError";
 
 PyDoc_STRVAR(module_doc, "contour_module module functions.");
+
+// Derived class names.
+static const char* MODULE_CIRCLE_CONTOUR_CLASS = "CircleContour";
 
 //-------------------
 // ContourObjectInit
@@ -174,22 +158,13 @@ PyDoc_STRVAR(module_doc, "contour_module module functions.");
 //
 // This function is used to initialize an object after it is created.
 //
-static int ContourObjectInit(ContourObject* self, PyObject* args, PyObject *kwds)
+static int 
+ContourObjectInit(ContourObject* self, PyObject* args, PyObject *kwds)
 {
   static int numObjs = 1;
   std::cout << "[ContourObjectInit] New Contour object: " << numObjs << std::endl;
   self->count = numObjs;
   self->contour = new Contour();
-  numObjs += 1;
-  return 0;
-}
-
-static int CircleContourObjectInit(CircleContourObject* self, PyObject* args, PyObject *kwds)
-{ 
-  static int numObjs = 1;
-  std::cout << "[CircleContourObjectInit] New Contour object: " << numObjs << std::endl;
-  self->count = numObjs;
-  self->contour = new CircleContour();
   numObjs += 1;
   return 0;
 }
@@ -200,12 +175,7 @@ static int CircleContourObjectInit(CircleContourObject* self, PyObject* args, Py
 //
 static PyMethodDef ContourMethods[] = {
   { "add_control_point", (PyCFunction)Contour_add_control_point, METH_VARARGS, NULL},
-  {NULL,NULL}
-};
-
-static PyMethodDef CircleContourMethods[] = {
-  //{ "add_control_point", (PyCFunction)CircleContour_add_control_point, METH_VARARGS, NULL},
-  { "set_radius", (PyCFunction)CircleContour_set_radius, METH_VARARGS, NULL},
+  { "set_center", (PyCFunction)Contour_set_center, METH_VARARGS, NULL},
   {NULL,NULL}
 };
 
@@ -225,18 +195,6 @@ ContourObjectNew(PyTypeObject *type, PyObject *args, PyObject *kwds)
   return (PyObject *) self;
 }
 
-static PyObject *
-CircleContourObjectNew(PyTypeObject *type, PyObject *args, PyObject *kwds)
-{
-  std::cout << "[CircleContourObjectNew] CircleContourObjectNew " << std::endl;
-  auto self = (CircleContourObject*)type->tp_alloc(type, 0);
-  if (self != NULL) {
-      self->id = 2;
-  }
-
-  return (PyObject *) self;
-}
-
 //---------------------
 // ContourObjectDelete
 //---------------------
@@ -245,77 +203,32 @@ static void
 ContourObjectDealloc(ContourObject* self)
 {
   std::cout << "[ContourObjectDealloc] Free ContourObject" << std::endl;
-  //delete self->contour;
+  delete self->contour;
   Py_TYPE(self)->tp_free(self);
 }
 
+//----------------------
+// SetContourTypeFields 
+//----------------------
+// Set the Python type object fields that stores Contour data. 
+//
+// Need to set the fields here because g++ does not suppor non-trivial 
+// designated initializers. 
+//
 static void
-CircleContourObjectDealloc(CircleContourObject* self)
+SetContourTypeFields(PyTypeObject& contourType)
 {
-  std::cout << "[CircleContourObjectDealloc] Free CircleContourObject" << std::endl;
-  //delete self->contour;
-  Py_TYPE(self)->tp_free(self);
-}
-
-
-//------------------------------------
-// Define the ContourType type object
-//------------------------------------
-// Define the Python type object that stores Contour data. 
-//
-// Only set the fields we need, the remaining fields will be filled 
-// with zeros by the compiler.
-//
-static PyTypeObject ContourType = {
-
-  PyVarObject_HEAD_INIT(NULL, 0)
-
-  // Dotted name that includes both the module name and 
-  // the name of the type within the module.
-  .tp_name = "contour.Contour",
-
-  .tp_basicsize = sizeof(ContourObject),
-
   // Doc string for this type.
-  .tp_doc = "Contour  objects", 
-
+  contourType.tp_doc = "Contour  objects";
   // Object creation function, equivalent to the Python __new__() method. 
   // The generic handler creates a new instance using the tp_alloc field.
-  .tp_new = ContourObjectNew,
-  //.tp_new = PyType_GenericNew,
-
-  .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-  .tp_init = (initproc)ContourObjectInit, 
-  .tp_dealloc = (destructor)ContourObjectDealloc,
-  .tp_methods = ContourMethods
+  contourType.tp_new = ContourObjectNew;
+  //contourType.tp_new = PyType_GenericNew,
+  contourType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
+  contourType.tp_init = (initproc)ContourObjectInit;
+  contourType.tp_dealloc = (destructor)ContourObjectDealloc;
+  contourType.tp_methods = ContourMethods;
 };
-
-static PyTypeObject CircleContourType = {
-
-  PyVarObject_HEAD_INIT(NULL, 0)
-
-  // Dotted name that includes both the module name and 
-  // the name of the type within the module.
-  .tp_name = "contour.CircleContour",
-
-  .tp_basicsize = sizeof(CircleContourObject),
-
-  // Doc string for this type.
-  .tp_doc = "CircleContour  objects",
-
-  // Object creation function, equivalent to the Python __new__() method. 
-  // The generic handler creates a new instance using the tp_alloc field.
-  .tp_new = CircleContourObjectNew,
-  //.tp_new = PyType_GenericNew,
-
-  .tp_base = &ContourType,
-
-  .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-  .tp_init = (initproc)CircleContourObjectInit,
-  .tp_dealloc = (destructor)CircleContourObjectDealloc,
-  .tp_methods = CircleContourMethods
-};
-
 
 //-------------------
 // CreateContourType
@@ -333,11 +246,13 @@ CreateContourType()
 //
 static PyMethodDef ContourModuleMethods[] =
 {
-    {"cos_func", cos_func, METH_VARARGS, "evaluate the cosine"},
-
-   {NULL, NULL, 0, NULL}
-
+  {"cos_func", cos_func, METH_VARARGS, "evaluate the cosine"},
+  {NULL, NULL, 0, NULL}
 };
+
+// Include derived Contour classes.
+#include "circle_contour_module.h"
+#include "contour_module_kernel.h"
 
 //---------------------------------------------------------------------------
 //                           PYTHON_MAJOR_VERSION 3                         
@@ -373,15 +288,25 @@ PyInit_contour(void)
 
   // Setup the Contour object type.
   //
+  SetContourTypeFields(ContourType);
   if (PyType_Ready(&ContourType) < 0) {
       std::cout << "Error creating Contour type" << std::endl;
       return nullptr;
   }
 
+  SetCircleContourTypeFields(CircleContourType);
   if (PyType_Ready(&CircleContourType) < 0) {
       std::cout << "Error creating CircleContour type" << std::endl;
       return nullptr;
   }
+
+/*
+  SetContourKernelTypeFields(ContourKernelType);
+  if (PyType_Ready(&ContourKernelType) < 0) {
+      std::cout << "Error creating ContourKernel type" << std::endl;
+      return nullptr;
+  }
+*/
 
   // Create the contour module.
   auto module = PyModule_Create(&ContourModule);
@@ -403,6 +328,12 @@ PyInit_contour(void)
   // Add the 'CircleContour' object.
   Py_INCREF(&CircleContourType);
   PyModule_AddObject(module, MODULE_CIRCLE_CONTOUR_CLASS, (PyObject*)&CircleContourType);
+
+/*
+  // Add the 'kernel' object.
+  Py_INCREF(&ContourKernelType);
+  PyModule_AddObject(module, "kernel", (PyObject*)&ContourKernelType);
+*/
 
   return module;
 }

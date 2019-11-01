@@ -14,3 +14,8 @@ CircleContour::SetRadius(double radius)
 }
 
 
+std::string CircleContour::GetClassName()
+{
+  return std::string("CircleContour");
+}
+

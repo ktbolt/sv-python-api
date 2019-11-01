@@ -1,26 +1,34 @@
 
-src = Contour.cpp CircleContour.cpp contour_module.cpp
-obj = $(src:.cpp=.o) 
+src=Contour.cpp CircleContour.cpp contour_module.cpp
+obj=$(src:.cpp=.o) 
+headers=contour_module.h circle_contour_module.h contour_module_kernel.h 
 
 # Shared library name must match the module name.
-lib = lcontour.dylib
+lib = contour.dylib
 lib = contour.so
 
+## MacOS
 pdir= /usr/local/Cellar/python/3.6.5_1/Frameworks/Python.framework/Versions/3.6
 inc=-I$(pdir)/Headers
+libs=-L$(pdir)/lib -lpython3.6
+
+## Ubuntu
+inc=-I/usr/include/python3.5
+libs=-L/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu -lpython3.5
 
 flags=-std=c++11 
 flags=-std=c++11 -fPIC $(inc)
 
-libs=-L$(pdir)/lib -lpython3.6
-
-$(lib): $(obj)
+$(lib): $(obj) 
 	g++ -shared -o $(lib) $(obj) $(libs) $(link_flags)
 
-Contour.cpp.o: Contour.h
+Contour.o: Contour.cpp Contour.h
 	g++ $(flags) -c $<
 
-CircleContour.cpp.o: CircleContour.h
+contour_module.o: contour_module.cpp $(headers)
+	g++ $(flags) -c $<
+
+CircleContour.o: CircleContour.cpp CircleContour.h
 	g++ $(flags) -c $<
 
 .cpp.o: 
