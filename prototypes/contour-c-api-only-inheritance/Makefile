@@ -7,14 +7,20 @@ headers=contour_module.h circle_contour_module.h contour_module_kernel.h
 lib = contour.dylib
 lib = contour.so
 
+OS := $(shell uname)
+
 ## MacOS
-pdir= /usr/local/Cellar/python/3.6.5_1/Frameworks/Python.framework/Versions/3.6
-inc=-I$(pdir)/Headers
-libs=-L$(pdir)/lib -lpython3.6
+#
+ifeq ($(OS),Darwin)
+  pdir= /usr/local/Cellar/python/3.6.5_1/Frameworks/Python.framework/Versions/3.6
+  inc=-I$(pdir)/Headers
+  libs=-L$(pdir)/lib -lpython3.6
 
 ## Ubuntu
-inc=-I/usr/include/python3.5
-libs=-L/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu -lpython3.5
+else
+  inc=-I/usr/include/python3.5
+  libs=-L/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu -lpython3.5
+endif
 
 flags=-std=c++11 
 flags=-std=c++11 -fPIC $(inc)

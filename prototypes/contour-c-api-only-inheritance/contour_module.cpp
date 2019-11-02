@@ -11,28 +11,14 @@
 #include "CircleContour.h"
 
 #include "contour_module.h"
+#include "contour_module_kernel.h"
 
 #include <Python.h>
 
 // Exception type used by PyErr_SetString() to set the for the error indicator.
 static PyObject * PyRunTimeErrPg;
 
-// Define a map between contour kernel name and enum type.
-static std::map<std::string,cKernelType> kernelNameTypeMap =
-{
-    {"Circle", cKERNEL_CIRCLE},
-    {"Ellipse", cKERNEL_ELLIPSE},
-    {"LevelSet", cKERNEL_LEVELSET},
-    {"Polygon", cKERNEL_POLYGON},
-    {"SplinePolygon", cKERNEL_SPLINEPOLYGON},
-    {"Threshold", cKERNEL_THRESHOLD}
-};
-
-/*
-static std::vector<std::string> kernalNames =
-{
-};
-*/
+PyObject * CreateContour(std::string kernelName);
 
 //////////////////////////////////////////////////////
 //          M o d u l e  F u n c t i o n s          //
@@ -40,23 +26,23 @@ static std::vector<std::string> kernalNames =
 //
 // Python API functions. 
 
-//----------
-// cos_func 
-//----------
+//----------------
+// Contour_create 
+//----------------
 //
 static PyObject * 
-cos_func(PyObject* self, PyObject* args)
+Contour_create(PyObject* self, PyObject* args)
 {
-    double value;
-    double answer;
+  char* kernelName = nullptr;
 
-    if (!PyArg_ParseTuple(args, "d", &value)) {
+  if (!PyArg_ParseTuple(args, "s", &kernelName)) {
         return NULL;
-    }
+  }
 
-    answer = cos(value);
-
-    return Py_BuildValue("f", answer);
+  std::cout << "[Contour_create] Kernel name: " << kernelName << std::endl;
+  auto cont = CreateContour(std::string(kernelName));
+  Py_INCREF(cont);
+  return cont; 
 }
 
 //---------------------------
@@ -163,6 +149,15 @@ ContourObjectInit(ContourObject* self, PyObject* args, PyObject *kwds)
 {
   static int numObjs = 1;
   std::cout << "[ContourObjectInit] New Contour object: " << numObjs << std::endl;
+
+  char* kernalName = nullptr;
+  
+  if (!PyArg_ParseTuple(args, "s", &kernalName)) {
+      return -1;
+  }
+
+  std::cout << "[ContourObjectInit] Kernel name: " << kernalName << std::endl;
+
   self->count = numObjs;
   self->contour = new Contour();
   numObjs += 1;
@@ -230,29 +225,29 @@ SetContourTypeFields(PyTypeObject& contourType)
   contourType.tp_methods = ContourMethods;
 };
 
-//-------------------
-// CreateContourType
-//-------------------
-// 
-ContourObject * 
-CreateContourType()
-{
-  return PyObject_New(ContourObject, &ContourType);
-}
-
 //----------------
 // Module methods
 //----------------
 //
 static PyMethodDef ContourModuleMethods[] =
 {
-  {"cos_func", cos_func, METH_VARARGS, "evaluate the cosine"},
+  {"create", Contour_create, METH_VARARGS, "Create a Contour object."},
   {NULL, NULL, 0, NULL}
 };
 
 // Include derived Contour classes.
 #include "circle_contour_module.h"
-#include "contour_module_kernel.h"
+
+//---------------
+// CreateContour
+//---------------
+// 
+PyObject * 
+CreateContour(std::string kernelName)
+{
+  auto * cont = PyObject_CallObject((PyObject*)&CircleContourType, NULL);
+  return cont; 
+}
 
 //---------------------------------------------------------------------------
 //                           PYTHON_MAJOR_VERSION 3                         
@@ -300,13 +295,11 @@ PyInit_contour(void)
       return nullptr;
   }
 
-/*
   SetContourKernelTypeFields(ContourKernelType);
   if (PyType_Ready(&ContourKernelType) < 0) {
       std::cout << "Error creating ContourKernel type" << std::endl;
       return nullptr;
   }
-*/
 
   // Create the contour module.
   auto module = PyModule_Create(&ContourModule);
@@ -329,11 +322,11 @@ PyInit_contour(void)
   Py_INCREF(&CircleContourType);
   PyModule_AddObject(module, MODULE_CIRCLE_CONTOUR_CLASS, (PyObject*)&CircleContourType);
 
-/*
   // Add the 'kernel' object.
   Py_INCREF(&ContourKernelType);
   PyModule_AddObject(module, "kernel", (PyObject*)&ContourKernelType);
-*/
+
+  SetContourKernelTypes(ContourKernelType);
 
   return module;
 }

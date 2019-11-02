@@ -2,11 +2,14 @@ import contour
 
 print(dir(contour))
 
-#print(contour.cos_func(1.0))
-
 ## Contour 
 #
-cont = contour.Contour()
+center = [0.0, 0.0, 0.0] 
+cont = contour.create(contour.kernel.CIRCLE)
+cont.set_center(center)
+cont.set_radius(1.0)
+
+'''
 center = [0.0, 0.0, 0.0] 
 cont.set_center(center)
 pt = [1.0, 0.0, 0.0] 
@@ -22,18 +25,23 @@ circle_cont.add_control_point(cpt1)
 circle_cont.add_control_point(cpt2)
 circle_cont.set_radius(radius)
 circle_cont.set_center(center)
+'''
 
-print("---------------------------")
+#print("---------------------------")
+#kernel = contour.kernel()
+#print("kernel: "+str(kernel))
+#print(contour.kernel)
+#print(contour.kernel.circle)
+#print("contour.kernel.CIRCLE: " + str(contour.kernel.CIRCLE))
 
 '''
-print(contour.kernel)
-print(contour.kernel.circle)
+#print("contour.kernel.get_names: " + str(contour.kernel.get_names()))
+print("contour.kernel.names: " + str(contour.kernel.names))
 
-if "circle" == contour.kernel.circle:
+if "CIRCLE" == contour.kernel.CIRCLE:
     print("------------------ true ---------------------------")
 else:
     print("------------------ false ---------------------------")
 '''
-
 
 

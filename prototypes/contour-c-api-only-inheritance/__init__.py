@@ -11,6 +11,8 @@ elif sys.platform == "linux2":
 elif sys.platform == "win32" or sys.platform =="cygwin":
     ext = "dll"
 
+print("#######################")
+
 '''
 try: 
     contour_lib = ctypes.PyDLL('libcontour.' + ext)

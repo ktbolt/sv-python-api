@@ -18,7 +18,6 @@ typedef struct {
   double radius;
 } CircleContourObject;
 
-
 //////////////////////////////////////////////////////
 //          M o d u l e  F u n c t i o n s          //
 //////////////////////////////////////////////////////
@@ -61,7 +60,7 @@ static int
 CircleContourObjectInit(CircleContourObject* self, PyObject* args, PyObject *kwds)
 { 
   static int numObjs = 1;
-  std::cout << "[CircleContourObjectInit] New Contour object: " << numObjs << std::endl;
+  std::cout << "[CircleContourObjectInit] New CircleContour object: " << numObjs << std::endl;
   self->super.count = numObjs;
   self->super.contour = new CircleContour();
   numObjs += 1;
@@ -143,4 +142,5 @@ SetCircleContourTypeFields(PyTypeObject& contourType)
   contourType.tp_dealloc = (destructor)CircleContourObjectDealloc;
   contourType.tp_methods = CircleContourMethods;
 };
+
 
