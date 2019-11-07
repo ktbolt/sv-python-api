@@ -136,6 +136,7 @@ PyDoc_STRVAR(module_doc, "contour_module module functions.");
 
 // Derived class names.
 static const char* MODULE_CIRCLE_CONTOUR_CLASS = "CircleContour";
+static const char* MODULE_POLYGON_CONTOUR_CLASS = "PolygonContour";
 
 //-------------------
 // ContourObjectInit
@@ -237,6 +238,7 @@ static PyMethodDef ContourModuleMethods[] =
 
 // Include derived Contour classes.
 #include "circle_contour_module.h"
+#include "polygon_contour_module.h"
 
 //---------------
 // CreateContour
@@ -295,6 +297,12 @@ PyInit_contour(void)
       return nullptr;
   }
 
+  SetPolygonContourTypeFields(PolygonContourType);
+  if (PyType_Ready(&PolygonContourType) < 0) {
+      std::cout << "Error creating PolygonContourType type" << std::endl;
+      return nullptr;
+  }
+
   SetContourKernelTypeFields(ContourKernelType);
   if (PyType_Ready(&ContourKernelType) < 0) {
       std::cout << "Error creating ContourKernel type" << std::endl;
@@ -321,6 +329,10 @@ PyInit_contour(void)
   // Add the 'CircleContour' object.
   Py_INCREF(&CircleContourType);
   PyModule_AddObject(module, MODULE_CIRCLE_CONTOUR_CLASS, (PyObject*)&CircleContourType);
+
+  // Add the 'PolygonContour' object.
+  Py_INCREF(&PolygonContourType);
+  PyModule_AddObject(module, MODULE_POLYGON_CONTOUR_CLASS, (PyObject*)&PolygonContourType);
 
   // Add the 'kernel' object.
   Py_INCREF(&ContourKernelType);

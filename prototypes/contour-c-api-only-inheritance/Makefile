@@ -1,11 +1,21 @@
 
-src=Contour.cpp CircleContour.cpp contour_module.cpp
-obj=$(src:.cpp=.o) 
-headers=contour_module.h circle_contour_module.h contour_module_kernel.h 
-
+## Contour sources.
+#
+cont_src=Contour.cpp CircleContour.cpp PolygonContour.cpp contour_module.cpp
+cont_obj=$(cont_src:.cpp=.o) 
+cont_headers=contour_module.h circle_contour_module.h contour_module_kernel.h polygon_contour_module.h
 # Shared library name must match the module name.
-lib = contour.dylib
-lib = contour.so
+cont_lib = contour.dylib
+cont_lib = contour.so
+
+## Path sources.
+#
+path_src=Path.cpp path_module.cpp
+path_obj=$(path_src:.cpp=.o) 
+path_headers=path_module.h 
+# Shared library name must match the module name.
+path_lib = path.dylib
+path_lib = path.so
 
 OS := $(shell uname)
 
@@ -25,8 +35,10 @@ endif
 flags=-std=c++11 
 flags=-std=c++11 -fPIC $(inc)
 
-$(lib): $(obj) 
-	g++ -shared -o $(lib) $(obj) $(libs) $(link_flags)
+libs: $(cont_lib) $(path_lib)
+
+$(cont_lib): $(cont_obj) 
+	g++ -shared -o $(cont_lib) $(cont_obj) $(libs) $(link_flags)
 
 Contour.o: Contour.cpp Contour.h
 	g++ $(flags) -c $<
@@ -36,6 +48,12 @@ contour_module.o: contour_module.cpp $(headers)
 
 CircleContour.o: CircleContour.cpp CircleContour.h
 	g++ $(flags) -c $<
+
+PolygonContour.o: PolygonContour.cpp PolygonContour.h
+	g++ $(flags) -c $<
+
+$(path_lib): $(path_obj) 
+	g++ -shared -o $(path_lib) $(path_obj) $(libs) $(link_flags)
 
 .cpp.o: 
 	g++ $(flags) -c $<
