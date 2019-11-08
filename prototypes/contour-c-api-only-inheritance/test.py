@@ -19,6 +19,8 @@ path.add_control_point(cpt4)
 
 ## Create CircleContour from path.
 #
-circle_cont = contour.CircleContour(path)
+circle_cont = contour.CircleContour()
+circle_cont.set_center_from_path(path, 2)
+#circle_cont.set_center_from_path(2, path)
 
 

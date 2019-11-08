@@ -6,6 +6,7 @@
 #include <string>
 
 #include "contour_module.h"
+#include "path_module.h"
 #include "CircleContour.h"
 
 //---------------------
@@ -45,6 +46,56 @@ CircleContour_set_radius(CircleContourObject* self, PyObject* args)
   Py_RETURN_NONE;
 }
 
+//------------------------------------
+// CircleContour_set_center_from_path
+//------------------------------------
+//
+static PyObject*
+CircleContour_set_center_from_path(CircleContourObject* self, PyObject* args)
+{
+  PyObject* pathArg;
+  int pathIndex;
+
+  if (!PyArg_ParseTuple(args, "Oi", &pathArg, &pathIndex)) {
+      return nullptr;
+  }
+  auto pmsg = "[CircleContour::set_center_from_path] ";
+  std::cout << pmsg << std::endl;
+  std::cout << pmsg << "Set center from path ..." << std::endl;
+  std::cout << pmsg << "Path index:" << pathIndex << std::endl;
+  std::cout << pmsg << "Object type: " << pathArg->ob_type->tp_name << std::endl;
+  //std::cout << pmsg << "PathType: " << pathArg->ob_type->tp_name << std::endl;
+
+  /*
+  #define PyObject_TypeCheck(ob, tp) \
+    (Py_TYPE(ob) == (tp) || PyType_IsSubtype(Py_TYPE(ob), (tp)))
+
+  #define Py_TYPE(ob)             (_PyObject_CAST(ob)->ob_type)
+  */
+
+  //std::cout << "PathType: " << &PathType << std::endl;
+  //std::cout << "pathArg->ob_type: " << pathArg->ob_type << std::endl;
+
+/*
+  if (Py_TYPE(pathArg) == (&PathType)) {
+      std::cout << pmsg << "OK: The 'path' argument is a Path object." << std::endl;
+  }
+
+*/
+  if (!PyObject_TypeCheck(pathArg, &PathType)) {
+      std::cout << pmsg << "ERROR: The 'path' argument is not a Path object." << std::endl;
+      return nullptr;
+  } 
+
+  auto pathObj = (PathObject*)pathArg;
+  auto path = pathObj->path; 
+  int numControlPoints = path->m_ControlPoints.size();
+  std::cout << "Path number of control points: " << numControlPoints << std::endl;
+
+
+  Py_RETURN_NONE;
+}
+
 ////////////////////////////////////////////////////////
 //          M o d u l e  D e f i n i t i o n          //
 ////////////////////////////////////////////////////////
@@ -68,6 +119,7 @@ CircleContourObjectInit(CircleContourObject* self, PyObject* args, PyObject *kwd
 }
 
 static PyMethodDef CircleContourMethods[] = {
+  { "set_center_from_path", (PyCFunction)CircleContour_set_center_from_path, METH_VARARGS, NULL},
   { "set_radius", (PyCFunction)CircleContour_set_radius, METH_VARARGS, NULL},
   {NULL,NULL}
 };

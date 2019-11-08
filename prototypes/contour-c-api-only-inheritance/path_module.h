@@ -24,6 +24,9 @@ typedef struct {
   int id;
 } PathObject;
 
+extern PyTypeObject PathType;
+
+/*
 //------------------------------------
 // Define the PathType type object
 //------------------------------------
@@ -40,7 +43,7 @@ static PyTypeObject PathType =
   .tp_name = "path.Path",
   .tp_basicsize = sizeof(PathObject)
 };
-
+*/
 
 #endif
 

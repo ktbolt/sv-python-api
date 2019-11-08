@@ -35,15 +35,18 @@ endif
 flags=-std=c++11 
 flags=-std=c++11 -fPIC $(inc)
 
-libs: $(cont_lib) $(path_lib)
+libs: $(path_lib) $(cont_lib) 
 
-$(cont_lib): $(cont_obj) 
-	g++ -shared -o $(cont_lib) $(cont_obj) $(libs) $(link_flags)
+$(path_lib): $(path_obj) 
+	g++ -shared -o $(path_lib) $(path_obj) $(libs) $(link_flags)
+
+$(cont_lib): $(cont_obj) $(cont_headers)
+	g++ -shared -o $(cont_lib) $(cont_obj) $(libs) ./path.so $(link_flags)
 
 Contour.o: Contour.cpp Contour.h
 	g++ $(flags) -c $<
 
-contour_module.o: contour_module.cpp $(headers)
+contour_module.o: contour_module.cpp $(cont_headers)
 	g++ $(flags) -c $<
 
 CircleContour.o: CircleContour.cpp CircleContour.h
@@ -52,8 +55,6 @@ CircleContour.o: CircleContour.cpp CircleContour.h
 PolygonContour.o: PolygonContour.cpp PolygonContour.h
 	g++ $(flags) -c $<
 
-$(path_lib): $(path_obj) 
-	g++ -shared -o $(path_lib) $(path_obj) $(libs) $(link_flags)
 
 .cpp.o: 
 	g++ $(flags) -c $<
