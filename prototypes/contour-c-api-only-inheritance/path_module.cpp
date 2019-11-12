@@ -90,7 +90,7 @@ Path_get_geometry(PathObject* self, PyObject* args)
 
 static const char* MODULE_NAME = "path";
 static const char* MODULE_CONTOUR_CLASS = "Path";
-static const char* MODULE_EXCEPTION = "contour.PathError";
+static const char* MODULE_EXCEPTION = "path.PathError";
 static const char* MODULE_EXCEPTION_OBJECT = "PathError";
 
 PyDoc_STRVAR(module_doc, "path_module module functions.");
