@@ -206,7 +206,7 @@ static PyMethodDef PathModuleMethods[] =
 //---------------
 // 
 PyObject * 
-CreatePath(std::string kernelName)
+CreatePath()
 {
   auto * path = PyObject_CallObject((PyObject*)&PathType, NULL);
   return path; 

@@ -26,6 +26,9 @@ typedef struct {
 
 extern PyTypeObject PathType;
 
+PyObject * CreatePath();
+
+
 /*
 //------------------------------------
 // Define the PathType type object
