@@ -1,0 +1,23 @@
+
+=================================================================================================================
+                                                Capsules
+=================================================================================================================
+- A Capsule is a Python data type which stores a pointer (void *). 
+- Capsules can only be created and accessed via their C API, but they can be passed around like any other Python object.
+
+- they can be assigned to a name in an extension module’s namespace. 
+- Other extension modules can then import this module, retrieve the value of this name, and then retrieve the pointer 
+  from the Capsule.
+
+- important to name your Capsules properly
+
+PyCapsule_New()
+PyCapsule_Import()
+
+
+=================================================================================================================
+                                            Macros
+=================================================================================================================
+
+- pointer to a type object and a reference count (these can be accessed using the macros Py_REFCNT and Py_TYPE respectively
+

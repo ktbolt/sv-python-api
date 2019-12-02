@@ -3,6 +3,7 @@ This scripts tests reading a PathGroup file.
 '''
 import sv 
 import vtk 
+from pathlib import Path
 #print(dir(sv.path_group))
 #print(dir(sv.path_group.PathGroup))
 
@@ -60,7 +61,8 @@ def create_path_geometry(renderer, path):
 
 ## Create a PathGroup from an SV file.
 #
-file_name = "/home/davep/Simvascular/DemoProject/Paths/aorta.pth"
+home = str(Path.home())
+file_name = home+"/Simvascular/DemoProject/Paths/aorta.pth"
 aorta_group = sv.path_group.read(file_name)
 print("Number of paths: {0:d}".format(aorta_group.get_time_size()))
 print("Method: {0:s}".format(aorta_group.get_method()))
@@ -77,6 +79,7 @@ renderer_win = vtk.vtkRenderWindow()
 renderer_win.AddRenderer(renderer)
 renderer.SetBackground(0.8, 0.8, 0.8)
 renderer_win.SetSize(500, 500)
+renderer_win.Render()
 renderer_win.SetWindowName("Vis Path")
 
 ## Create path geometry.
