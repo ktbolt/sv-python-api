@@ -18,7 +18,7 @@
 // Exception type used by PyErr_SetString() to set the for the error indicator.
 static PyObject * PyRunTimeErrPg;
 
-PyObject * CreateContour(std::string kernelName);
+static PyObject * CreateContour(std::string kernelName);
 
 //////////////////////////////////////////////////////
 //          M o d u l e  F u n c t i o n s          //

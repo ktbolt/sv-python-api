@@ -1,0 +1,66 @@
+
+=================================================================================================================
+                                                Contour 
+=================================================================================================================
+
+- SV Contour has several types
+  + sv3_CircleContour.h
+  + sv3_LevelSetContour.h
+  + sv3_PolygonContour.h
+  + sv3_SplinePolygonContour.h
+  + sv3_ThresholdContour.h
+
+- defined using PathPoint
+
+  + typedef Spline::SplinePoint PathPoint;
+
+    struct SplinePoint {
+        int id;
+        std::array<double,3>  pos;
+        std::array<double,3>  tangent;
+        std::array<double,3>  rotation;   // this is really a vector normal to the tangent.
+    };
+
+=================================================================================================================
+                                         Old python example
+=================================================================================================================
+# Set contour type
+Contour.SetContourKernel('Circle')
+
+# Create new contour 
+c =Contour.pyContour()
+c.NewObject('ct','path1',0)
+
+# Set control points
+c.SetCtrlPtsByRadius([0.,0.,0.],2)
+
+# Creat contour
+c.Create()
+print ("Contour created: area is: " + str(c.Area()) + "; center is: " +str(c.Center()))
+
+# Get PolyData
+c.GetPolyData('ctp')
+
+
+=================================================================================================================
+                                   New Object Based Methods
+=================================================================================================================
+
+- have two ways to create circle contour objects
+
+  1) Pass in all parameters needed to create the contour to the ctor
+
+     cont = sv.contour.Circle(center=[], normal=[], radius=R)
+
+     cont = sv.contour.Circle(path=path, point_index=1)
+
+
+  2) Create circle contour object and then set the parameters 
+
+     cont = sv.contour.Circle()
+     cont.set_center()
+     cont.set_normal()
+     cont.set_radius()
+
+
+
