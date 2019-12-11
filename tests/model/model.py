@@ -2,38 +2,35 @@ import sv
 import vtk
 
 #print(dir(sv))
-#print(dir(sv.solid))
+print(dir(sv.solid))
 print("Solid modeling kernel names: {0:s}".format(str(sv.solid.Kernel.names)))
 
-## Create a polydata modeler
+## Create a polydata modeler.
 #
 modeler = sv.solid.Modeler(sv.solid.Kernel.POLYDATA)
+#modeler = sv.solid.Modeler(sv.solid.Kernel.OPENCASCADE)
 
 ## Create a cylinder.
 #
-print("Create a cylinder.") 
+print("Create a cylinder ...") 
 center = [0.0, 0.0, 0.0]
 axis = [0.0, 0.0, 1.0]
 radius = 1.5
 length = 10.0
 cyl = modeler.cylinder(radius, length, center, axis)
-#cyl_polydata = model.get_polydata() 
-#print("polydata: " + str(type(cyl_polydata)))
-#print("Cylinder: num nodes: {0:d}".format(cyl_polydata.GetNumberOfPoints()))
-
-'''
-
-## Modeler class creates objects and performs operations 
-#  on them, returns SolidModel object.
-#
-modeler = sv.solid.Modeler(sv.solid.Kernel.POLYDATA)
-
+print("cyl type: " + str(type(cyl)))
 cyl_polydata = cyl.get_polydata() 
+print("Cylinder: num nodes: {0:d}".format(cyl_polydata.GetNumberOfPoints()))
 
-box = modeler.box([h,w,d], center)
-
-box_minus_cyl = modeler.subtract(box, cyl)
-
-
-'''
+## Create a box.
+#
+print("Create a box ...")
+center = [0.0, 0.0, 0.0]
+box = modeler.box3d(center, length=3.0, height=1.0, width=2.0)
+#box = modeler.box3d(center)
+#box = modeler.box3d(center, length=3.0)
+#box = modeler.box3d(center, width, height, length)
+print("box type: " + str(type(box)))
+box_polydata = box.get_polydata()
+print("Box: num nodes: {0:d}".format(box_polydata.GetNumberOfPoints()))
 
