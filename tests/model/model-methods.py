@@ -46,13 +46,15 @@ print("============= Test solid.Model methods ==========")
 model_methods = [m for m in dir(sv.solid.Model) if ('__' not in m)]
 print("solid.Model methods: {0:s}".format(str(model_methods)))
 
-# Create a modeler.
+## Create a modeler.
+#
+kernel = sv.solid.Kernel.OPENCASCADE 
+kernel = sv.solid.Kernel.PARASOLID 
 kernel = sv.solid.Kernel.POLYDATA
+#
 modeler = sv.solid.Modeler(kernel)
-#modeler = sv.solid.Modeler(sv.solid.Kernel.OPENCASCADE)
-#modeler = sv.solid.Modeler(sv.solid.Kernel.PARASOLID)
 
-# Create a cylinder.
+## Create a cylinder.
 center = [0.0, 0.0, 0.0]
 axis = [0.0, 0.0, 1.0]
 radius = 1.5
@@ -107,6 +109,7 @@ z = 0.0
 #----------------------------------------------------
 # delete_faces
 #----------------------------------------------------
+'''
 print("---------- delete_faces ----------")
 if kernel == sv.solid.Kernel.POLYDATA:
     angle = 90.0
@@ -120,11 +123,14 @@ cylinder.delete_faces(face_list)
 #cylinder.calculate_boundary_faces(angle) 
 face_ids = cylinder.get_face_ids()
 print("Cylinder: Face IDs after delete: {0:s}".format(str(face_ids)))
+'''
 #
+'''
 renderer, renderer_win = init_graphics()
 cylinder_polydata = cylinder.get_polydata() 
 add_geom(renderer, cylinder_polydata, color=[1.0,0.0,0.0], wire=False)
 display(renderer_win)
+'''
 
 #----------------------------------------------------
 # find_centroid 
@@ -162,10 +168,24 @@ add_geom(renderer, face2_polydata, color=[1.0,1.0,0.0])
 add_geom(renderer, face3_polydata, color=[1.0,0.0,1.0])
 display(renderer_win)
 '''
-
 #----------------------------------------------------
 # get_polydata 
 #----------------------------------------------------
 #cylinder_polydata = cylinder.get_polydata() 
 #print("Cylinder: num nodes: {0:d}".format(cylinder_polydata.GetNumberOfPoints()))
+
+
+#----------------------------------------------------
+# write 
+#----------------------------------------------------
+# [TODO:DaveP] Format should be optional, with a default native format: 
+#
+#    Parasolid: xmt_txt
+#    PolyData:  vtp
+#
+#
+#cylinder.write(file_name="cylinder", format="xmt_txt") 
+cylinder.write(file_name="cylinder", format="vtp") 
+#print("Cylinder: num nodes: {0:d}".format(cylinder_polydata.GetNumberOfPoints()))
+
 
