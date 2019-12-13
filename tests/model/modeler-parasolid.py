@@ -3,14 +3,15 @@ import vtk
 import sys
 
 #print(dir(sv))
-print(dir(sv.solid))
+#print(dir(sv.solid))
+#print(dir(sv.solid.Model))
 print("Solid modeling kernel names: {0:s}".format(str(sv.solid.Kernel.names)))
 
 ## Check that the modeler for the given kernel exists.
 #
 if not sv.solid.modeler_exists(sv.solid.Kernel.PARASOLID):
     print("No solid modeler for kernel: {0:s}".format(sv.solid.Kernel.PARASOLID))
-    sys.exit(1)
+    #sys.exit(1)
 
 ## Create a polydata modeler.
 #

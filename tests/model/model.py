@@ -25,7 +25,7 @@ print("Cylinder: num nodes: {0:d}".format(cyl_polydata.GetNumberOfPoints()))
 #
 print("Create a box ...")
 center = [0.0, 0.0, 0.0]
-box = modeler.box3d(center, length=3.0, height=1.0, width=2.0)
+box = modeler.box(center, length=3.0, height=1.0, width=2.0)
 #box = modeler.box3d(center)
 #box = modeler.box3d(center, length=3.0)
 #box = modeler.box3d(center, width, height, length)
