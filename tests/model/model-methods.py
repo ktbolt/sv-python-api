@@ -185,7 +185,7 @@ display(renderer_win)
 #
 #
 #cylinder.write(file_name="cylinder", format="xmt_txt") 
-cylinder.write(file_name="cylinder", format="vtp") 
+cylinder.write(file_name="cylinder", format="stl") 
 #print("Cylinder: num nodes: {0:d}".format(cylinder_polydata.GetNumberOfPoints()))
 
 
