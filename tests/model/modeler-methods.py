@@ -43,9 +43,10 @@ def init_graphics():
 modeler_methods = [m for m in dir(sv.solid.Modeler) if ('__' not in m)]
 print("solid.Modeler methods: {0:s}".format(str(modeler_methods)))
 
-# Create a polydata modeler.
-modeler = sv.solid.Modeler(sv.solid.Kernel.POLYDATA)
-#modeler = sv.solid.Modeler(sv.solid.Kernel.OPENCASCADE)
+# Create a modeler.
+kernel = sv.solid.Kernel.OPENCASCADE
+kernel = sv.solid.Kernel.POLYDATA
+modeler = sv.solid.Modeler(kernel)
 
 #----------------------------------------------------
 # box
@@ -100,6 +101,12 @@ add_geom(renderer, intersect_result_polydata)
 display(renderer_win)
 '''
 
+#----------------------------------------------------
+# read 
+#----------------------------------------------------
+print("Read solid model file ...")
+file_name = "cylinder.stl"
+solid_model = modeler.read(file_name)
 
 #----------------------------------------------------
 # sphere 
@@ -127,7 +134,6 @@ add_geom(renderer, box_polydata, color=[0.0,1.0,0.0], wire=True)
 add_geom(renderer, subtract_result_polydata)
 display(renderer_win)
 '''
-
 
 #----------------------------------------------------
 # union 

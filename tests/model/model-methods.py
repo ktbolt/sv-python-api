@@ -48,11 +48,16 @@ print("solid.Model methods: {0:s}".format(str(model_methods)))
 
 ## Create a modeler.
 #
-kernel = sv.solid.Kernel.OPENCASCADE 
 kernel = sv.solid.Kernel.PARASOLID 
 kernel = sv.solid.Kernel.POLYDATA
+kernel = sv.solid.Kernel.OPENCASCADE 
+#
+if not sv.solid.modeler_exists(kernel):
+    print("No solid modeler for kernel: {0:s}".format(kernel))
+    sys.exit(1)
 #
 modeler = sv.solid.Modeler(kernel)
+
 
 ## Create a cylinder.
 center = [0.0, 0.0, 0.0]
@@ -184,8 +189,12 @@ display(renderer_win)
 #    PolyData:  vtp
 #
 #
-#cylinder.write(file_name="cylinder", format="xmt_txt") 
-cylinder.write(file_name="cylinder", format="stl") 
+# For Parasolid.
+#cylinder.write(file_name="cylinder") 
+#
+#cylinder.write(file_name="cylinder", format="stl") 
+cylinder.write(file_name="cylinder", format="brep") 
+#
 #print("Cylinder: num nodes: {0:d}".format(cylinder_polydata.GetNumberOfPoints()))
 
 
