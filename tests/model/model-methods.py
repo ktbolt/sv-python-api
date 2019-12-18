@@ -2,6 +2,7 @@
 Test solid.Model methods. 
 '''
 import sv
+import sys
 import vtk
 
 def display(renderer_win):
@@ -48,9 +49,9 @@ print("solid.Model methods: {0:s}".format(str(model_methods)))
 
 ## Create a modeler.
 #
-kernel = sv.solid.Kernel.PARASOLID 
 kernel = sv.solid.Kernel.POLYDATA
 kernel = sv.solid.Kernel.OPENCASCADE 
+kernel = sv.solid.Kernel.PARASOLID 
 #
 if not sv.solid.modeler_exists(kernel):
     print("No solid modeler for kernel: {0:s}".format(kernel))
