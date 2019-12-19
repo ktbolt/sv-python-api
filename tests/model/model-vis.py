@@ -3,9 +3,11 @@ import vtk
 
 print("Solid modeling kernel names: {0:s}".format(str(sv.solid.Kernel.names)))
 
-## Create a polydata modeler.
+## Create a modeler.
 #
-modeler = sv.solid.Modeler(sv.solid.Kernel.POLYDATA)
+kernel = sv.solid.Kernel.POLYDATA 
+kernel = sv.solid.Kernel.PARASOLID
+modeler = sv.solid.Modeler(kernel)
 
 ## Create a cylinder.
 #
