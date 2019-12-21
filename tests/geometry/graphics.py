@@ -1,6 +1,7 @@
 import sv
 import vtk
 
+
 def create_contour_geometry(renderer, contour):
     """ 
     Create geometry for the contour points and control points.
@@ -94,6 +95,16 @@ def add_geom(renderer, polydata, color=[1.0, 1.0, 1.0], wire=False):
         actor.GetProperty().SetLineWidth(1.0)
     renderer.AddActor(actor)
 
+def add_sphere(renderer, center, radius, color=[1.0, 1.0, 1.0], wire=False):
+    sphere = vtk.vtkSphereSource()
+    sphere.SetCenter(center[0], center[1], center[2])
+    sphere.SetRadius(radius) 
+    sphere.SetPhiResolution(16)
+    sphere.SetThetaResolution(16)
+    sphere.Update()
+    sphere_pd = sphere.GetOutput() 
+    add_geom(renderer, sphere_pd, color, wire)
+
 def init_graphics(win_width, win_height):
     '''
     Create renderer and graphics window.
@@ -104,7 +115,7 @@ def init_graphics(win_width, win_height):
     renderer.SetBackground(0.8, 0.8, 0.8)
     renderer_win.SetSize(win_width, win_height)
     renderer_win.Render()
-    renderer_win.SetWindowName("Vis Modeler")
+    renderer_win.SetWindowName("SV Geometry")
     return renderer, renderer_win 
 
 
