@@ -60,9 +60,9 @@ contour2_polydata_align = sv.geometry.align_profile(contour1_ipolydata, contour2
 contour_list.append(contour2_polydata_align) 
 #gr.add_geom(renderer, contour2_polydata_align, color=[0.5, 0.5, 0.0])
 
-#contour3_polydata_align = sv.geometry.align_profile(contour2_polydata_align, contour3_ipolydata, use_distance=use_distance)
+contour3_polydata_align = sv.geometry.align_profile(contour2_polydata_align, contour3_ipolydata, use_distance=use_distance)
 #contour3_polydata_align = sv.geometry.interpolate_closed_curve(polydata=contour3_polydata_align, number_of_points=num_out_pts_in_segs)
-#contour_list.append(contour3_polydata_align) 
+contour_list.append(contour3_polydata_align) 
 
 pt = 3*[0.0]
 contour1_ipolydata.GetPoints().GetPoint(0, pt)
@@ -84,17 +84,12 @@ gr.add_sphere(renderer, pt, radius, color=[0,1,0])
 
 ## Loft solid. 
 #
-loft_options = sv.geometry.LoftOptions()
-loft_options.num_out_pts_in_segs = num_out_pts_in_segs 
-loft_options.num_out_pts_along_length = num_out_pts_along_length 
-loft_options.num_linear_pts_along_length = num_linear_pts_along_length
-loft_options.use_linear_sample_along_length = True 
-loft_options.num_modes = 20
-loft_options.use_fft = False
+loft_options = sv.geometry.LoftNurbsOptions()
+loft_options.u_degree = 4; 
+loft_options.v_degree = 4; 
 
-loft_solid = sv.geometry.loft_solid(polydata_list=contour_list, loft_options=loft_options)
-#loft_solid = sv.geometry.loft_solid(polydata_list=contour_list, loft_options=contour_polydata)
-gr.add_geom(renderer, loft_solid, color=[0.5, 0.0, 0.0], wire=True)
+loft_solid = sv.geometry.loft_solid_using_nurbs(polydata_list=contour_list, loft_nurbs_options=loft_options)
+#gr.add_geom(renderer, loft_solid, color=[0.5, 0.0, 0.0], wire=True)
 
 ## Show geometry.
 #
