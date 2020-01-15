@@ -18,6 +18,7 @@ radius = 1.5
 length = 10.0
 cyl = modeler.cylinder(radius, length, center, axis)
 print("cyl type: " + str(type(cyl)))
+print(cyl.available())
 cyl_polydata = cyl.get_polydata() 
 print("Cylinder: num nodes: {0:d}".format(cyl_polydata.GetNumberOfPoints()))
 
