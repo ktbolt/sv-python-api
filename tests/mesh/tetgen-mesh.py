@@ -55,30 +55,35 @@ print("Mesh:");
 print("  Number of nodes: {0:d}".format(mesh.GetNumberOfPoints()))
 print("  Number of elements: {0:d}".format(mesh.GetNumberOfCells()))
 
+## Write the mesh.
+mesher.write_mesh(file_name='cylinder-mesh.vtu')
+
 ## Show the mesh.
 #
-win_width = 500
-win_height = 500
-renderer, renderer_window = gr.init_graphics(win_width, win_height)
+show_mesh = False
+if show_mesh:
+    win_width = 500
+    win_height = 500
+    renderer, renderer_window = gr.init_graphics(win_width, win_height)
 
-#mesh_polydata = gr.convert_ug_to_polydata(mesh)
-mesh_polydata = mesher.get_polydata()
-gr.add_geom(renderer, mesh_polydata, color=[1.0, 1.0, 1.0], wire=True, edges=True)
-#gr.add_geom(renderer, mesh_polydata, color=[1.0, 1.0, 1.0], wire=False, edges=True)
+    #mesh_polydata = gr.convert_ug_to_polydata(mesh)
+    mesh_polydata = mesher.get_polydata()
+    gr.add_geom(renderer, mesh_polydata, color=[1.0, 1.0, 1.0], wire=True, edges=True)
+    #gr.add_geom(renderer, mesh_polydata, color=[1.0, 1.0, 1.0], wire=False, edges=True)
 
-#mesh_model_polydata = mesher.get_model_polydata()
-#gr.add_geom(renderer, mesh_model_polydata, color=[0.0, 1.0, 1.0], wire=True, edges=True)
+    #mesh_model_polydata = mesher.get_model_polydata()
+    #gr.add_geom(renderer, mesh_model_polydata, color=[0.0, 1.0, 1.0], wire=True, edges=True)
 
-face1_polydata = mesher.get_face_polydata(1)
-gr.add_geom(renderer, face1_polydata, color=[1.0, 0.0, 0.0], wire=False, edges=True)
+    face1_polydata = mesher.get_face_polydata(1)
+    gr.add_geom(renderer, face1_polydata, color=[1.0, 0.0, 0.0], wire=False, edges=True)
 
-face2_polydata = mesher.get_face_polydata(2)
-gr.add_geom(renderer, face2_polydata, color=[0.0, 1.0, 0.0], wire=False, edges=True)
+    face2_polydata = mesher.get_face_polydata(2)
+    gr.add_geom(renderer, face2_polydata, color=[0.0, 1.0, 0.0], wire=False, edges=True)
 
-face3_polydata = mesher.get_face_polydata(3)
-gr.add_geom(renderer, face3_polydata, color=[0.0, 0.0, 1.0], wire=False, edges=True)
+    face3_polydata = mesher.get_face_polydata(3)
+    gr.add_geom(renderer, face3_polydata, color=[0.0, 0.0, 1.0], wire=False, edges=True)
 
-gr.display(renderer_window)
+    gr.display(renderer_window)
 
 
 
