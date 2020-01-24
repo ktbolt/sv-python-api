@@ -24,9 +24,14 @@ options = adaptive_mesher.create_options()
 
 # options.use_isotropic_meshing = False; 
 
-#print("options values: ")
-#[ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
+print("options values: ")
+[ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 #help(options)
+
+# adaptive_mesher.check_options()
+
+adaptive_mesher.set_options(options)
+
 
 '''
 
