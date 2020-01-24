@@ -1,7 +1,5 @@
 '''
-Test TetGen adapt interface.
-
-Note: this currently does not work.
+Test TetGen adaptive meshing interface.
 '''
 import sv
 import vtk
@@ -9,28 +7,28 @@ import graphics as gr
 
 #print(dir(sv))
 print(dir(sv.meshing))
-print("Mesh generation kernel names: {0:s}".format(str(sv.meshing.Kernel.names)))
+print("Mesh generation adaptive kernel names: {0:s}".format(str(sv.meshing.AdaptiveKernel.names)))
 
-#mesher = sv.Mesher()
-#print(str(mesher))
-
-## Create a TetGen mesher.
+## Create a TetGen Adaptive mesher.
 #
-mesher = sv.meshing.create_mesher(sv.meshing.Kernel.TETGEN)
-print("Mesher: " + str(mesher))
-mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
+adaptive_mesher = sv.meshing.create_adaptive_mesher(sv.meshing.AdaptiveKernel.TETGEN)
+print("Mesher: " + str(adaptive_mesher))
+#mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
+
 
 ## Set meshing options.
 #
 print("Set meshing options ... ")
-options = mesher.create_options(global_edge_size=0.75, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)
+options = adaptive_mesher.create_options()
+#help(sv.meshing.TetGenAdaptiveOptions)
 
-# Set local edge size on a face.
-options.local_edge_size = {'face_id':2, 'edge_size':0.2}
+# options.use_isotropic_meshing = False; 
 
 #print("options values: ")
 #[ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 #help(options)
+
+'''
 
 ## Load solid model into the mesher.
 #  Note: must load solid before setting certain options!
@@ -70,3 +68,4 @@ print("  Number of elements: {0:d}".format(mesh.GetNumberOfCells()))
 #print("  Number of nodes: {0:d}".format(mesh.GetNumberOfPoints()))
 #print("  Number of elements: {0:d}".format(mesh.GetNumberOfCells()))
 
+'''
