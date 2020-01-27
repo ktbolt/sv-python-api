@@ -15,7 +15,6 @@ adaptive_mesher = sv.meshing.create_adaptive_mesher(sv.meshing.AdaptiveKernel.TE
 print("Mesher: " + str(adaptive_mesher))
 #mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
 
-
 ## Set meshing options.
 #
 print("Set meshing options ... ")
@@ -26,20 +25,18 @@ options = adaptive_mesher.create_options()
 
 print("options values: ")
 [ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
-#help(options)
 
-# adaptive_mesher.check_options()
-
-adaptive_mesher.set_options(options)
-
-
-'''
 
 ## Load solid model into the mesher.
 #  Note: must load solid before setting certain options!
 #
-file_name = 'cylinder.vtp'
-mesher.load_model(file_name)
+mesh_file_name = 'cylinder-mesh.vtu'
+model_file_name = 'cylinder.vtp'
+adaptive_mesher.create_internal_mesh(mesh_file=mesh_file_name, model_file=model_file_name)
+
+#adaptive_mesher.load_model(file_name)
+
+'''
 
 ## Set mesher options.
 mesher.set_options(options)
