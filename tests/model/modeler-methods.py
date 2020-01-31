@@ -4,6 +4,8 @@ Test solid.Modeler methods.
 import sv
 import vtk
 
+print(dir(sv))
+
 def display(renderer_win):
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
