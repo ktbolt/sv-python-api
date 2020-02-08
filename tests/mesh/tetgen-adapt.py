@@ -20,19 +20,20 @@ print("Mesher: " + str(adaptive_mesher))
 print("Set meshing options ... ")
 options = adaptive_mesher.create_options()
 #help(sv.meshing.TetGenAdaptiveOptions)
+#options.start_step = 100
+#options.end_step = 100
+options.step = 100
 
 # options.use_isotropic_meshing = False; 
 
 print("options values: ")
 [ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 
-
-## Load solid model into the mesher.
-#  Note: must load solid before setting certain options!
+## Generate an adpative mesh. 
 #
-mesh_file_name = 'cylinder-mesh.vtu'
+results_file_name = 'all_results.vtu'
 model_file_name = 'cylinder.vtp'
-adaptive_mesher.create_internal_mesh(mesh_file=mesh_file_name, model_file=model_file_name)
+adaptive_mesher.generate_mesh(results_file=results_file_name, model_file=model_file_name, options=options)
 
 #adaptive_mesher.load_model(file_name)
 
