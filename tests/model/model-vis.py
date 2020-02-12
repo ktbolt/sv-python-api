@@ -5,8 +5,8 @@ print("Solid modeling kernel names: {0:s}".format(str(sv.solid.Kernel.names)))
 
 ## Create a modeler.
 #
-kernel = sv.solid.Kernel.POLYDATA 
 kernel = sv.solid.Kernel.PARASOLID
+kernel = sv.solid.Kernel.POLYDATA 
 modeler = sv.solid.Modeler(kernel)
 
 ## Create a cylinder.
