@@ -1,3 +1,6 @@
+'''
+Test vmtk.cap() method.
+'''
 import sv
 import vtk
 import graphics as gr
@@ -26,11 +29,8 @@ center = com_filter.GetCenter()
 
 ## Cap the cylinder surface.
 #
-# fill_id=0, increment_id=True -> ids = 0, 1
-# fill_id=0, increment_id=False -> ids = 0, 0
-# no fill_id arg -> ids = 1, 2
-#
-capped_cylinder = sv.vmtk.cap_with_ids(surface=cylinder_polydata, fill_id=1, increment_id=True)
+capped_cylinder = sv.vmtk.cap(surface=cylinder_polydata, use_center=False)
+#capped_cylinder = sv.vmtk.cap(surface=cylinder_polydata, use_center=True)
 print("Capped cylinder model: num nodes: {0:d}".format(capped_cylinder.GetNumberOfPoints()))
 num_cells = capped_cylinder.GetNumberOfCells()
 num_arrays = capped_cylinder.GetCellData().GetNumberOfArrays()
@@ -40,8 +40,8 @@ for i in range(num_arrays):
   data_type = capped_cylinder.GetCellData().GetArray(i).GetDataType()
   data_name = capped_cylinder.GetCellData().GetArrayName(i)
   cell_data = capped_cylinder.GetCellData().GetArray(data_name)
-  print("Data name: {0:s}".format(data_name))
-  if (data_name == "CapID") or (data_name == "ModelFaceID"):
+  print("  Data name: {0:s}".format(data_name))
+  if data_name == "CenterlineCapID":
       ids = set()
       for cell_id in range(num_cells):
           value = cell_data.GetValue(cell_id)
@@ -50,8 +50,8 @@ for i in range(num_arrays):
       print("  IDs: {0:s}".format(str(ids)))
 
 # Add geometry to vtk renderer.
-gr.add_geom(renderer, cylinder_polydata, color=[0.5, 0.0, 0.0], wire=True)
-gr.add_geom(renderer, capped_cylinder, color=[0.0, 1.0, 0.0], wire=False)
+#gr.add_geom(renderer, cylinder_polydata, color=[0.5, 0.0, 0.0], wire=True)
+gr.add_geom(renderer, capped_cylinder, color=[0.0, 1.0, 0.0], wire=True)
 
 ## Show geometry.
 #
