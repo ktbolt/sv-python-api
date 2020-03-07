@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<format version="1.0" />
+<model type="Parasolid">
+    <timestep id="0">
+        <model_element type="Parasolid" num_sampling="20" use_uniform="0" max_dist="1">
+            <segmentations>
+                <seg name="LPA_01_01" />
+                <seg name="LPA_01_01_01" />
+            </segmentations>
+            <faces>
+                <face id="1530" name="LPA_01_01_01" type="cap" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1532" name="wall_LPA_01_01_01" type="wall" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1512" name="LPA_01_01" type="cap" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1514" name="LPA_01_01_2" type="cap" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1534" name="wall_LPA_01_01" type="wall" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1566" name="wall_blend_LPA_01_01_01_LPA_01_01" type="wall" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+            </faces>
+            <blend_radii>
+                <face_pair face_id1="1532" face_id2="1534" radius="0.05" />
+            </blend_radii>
+        </model_element>
+    </timestep>
+</model>

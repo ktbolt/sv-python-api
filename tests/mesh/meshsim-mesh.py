@@ -17,6 +17,11 @@ mesher.set_solid_modeler_kernel(sv.solid.Kernel.PARASOLID)
 ## Set meshing options.
 #
 print("Set meshing options ... ")
-options = mesher.create_options(global_edge_size=0.75, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)
+options = mesher.create_options(global_edge_size=0.75, surface_mesh_flag=True, volume_mesh_flag=True)
+
+# Set local edge size on a face.
+options.local_edge_size = {'face_id':2, 'edge_size':0.2}
+
+
 
 
