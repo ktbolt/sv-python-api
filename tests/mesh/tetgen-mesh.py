@@ -14,7 +14,8 @@ print("Mesh generation kernel names: {0:s}".format(str(sv.meshing.Kernel.names))
 
 ## Create a TetGen mesher.
 #
-mesher = sv.meshing.create_mesher(sv.meshing.Kernel.TETGEN)
+mesher = sv.meshing.TetGen()
+#mesher = sv.meshing.create_mesher(sv.meshing.Kernel.TETGEN)
 print("Mesher: " + str(mesher))
 mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
 
