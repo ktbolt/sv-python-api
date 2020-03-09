@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<format version="1.0" />
+<model type="Parasolid">
+    <timestep id="0">
+        <model_element type="Parasolid" num_sampling="20" use_uniform="0" max_dist="1">
+            <segmentations>
+                <seg name="aorta" />
+                <seg name="right_iliac" />
+            </segmentations>
+            <faces>
+                <face id="1647" name="wall_right_iliac" type="wall" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1638" name="right_iliac" type="cap" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1692" name="wall_aorta" type="wall" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1685" name="aorta" type="cap" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+                <face id="1683" name="aorta_2" type="cap" visible="true" opacity="1" color1="1" color2="1" color3="1" />
+            </faces>
+            <blend_radii />
+        </model_element>
+    </timestep>
+</model>
