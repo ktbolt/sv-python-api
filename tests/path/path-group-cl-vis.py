@@ -4,8 +4,8 @@ This scripts tests reading a PathGroup file.
 import sv 
 import vtk 
 from pathlib import Path
-#print(dir(sv.path_group))
-#print(dir(sv.path_group.PathGroup))
+#print(dir(sv))
+print(dir(sv.path))
 
 def create_path_geometry(renderer, path):
     """ Create geometry for the path curve and control points.
@@ -63,7 +63,7 @@ def create_path_geometry(renderer, path):
 #
 home = str(Path.home())
 file_name = home+"/Simvascular/DemoProject/Paths/aorta.pth"
-aorta_group = sv.path_group.read(file_name)
+aorta_group = sv.path.Group(file_name)
 print("Number of paths: {0:d}".format(aorta_group.get_time_size()))
 print("Method: {0:s}".format(aorta_group.get_method()))
 print("Path at time 0:")

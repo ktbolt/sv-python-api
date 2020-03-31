@@ -35,7 +35,6 @@ options.local_edge_size = {'face_id':2, 'edge_size':0.2}
 #  Note: must load solid before setting certain options!
 #
 file_name = 'cylinder.vtp'
-file_name = 'pd1.vtp'
 mesher.load_model(file_name)
 
 ## Set mesher options.

@@ -2,11 +2,11 @@
 This script tests opening an SV project.
 '''
 
+from pathlib import Path
 import sv 
 
-project_path = "/home/davep/Simvascular/DemoProject"
-
+home = str(Path.home())
+project_path = home + "/Simvascular/DemoProject"
 project = sv.project.Project()
-
 project.open(project_path)
 
