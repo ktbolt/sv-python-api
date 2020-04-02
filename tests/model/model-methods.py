@@ -49,9 +49,9 @@ print("solid.Model methods: {0:s}".format(str(model_methods)))
 
 ## Create a modeler.
 #
-kernel = sv.solid.Kernel.POLYDATA
 kernel = sv.solid.Kernel.OPENCASCADE 
 kernel = sv.solid.Kernel.PARASOLID 
+kernel = sv.solid.Kernel.POLYDATA
 #
 if not sv.solid.modeler_exists(kernel):
     print("No solid modeler for kernel: {0:s}".format(kernel))
@@ -193,8 +193,8 @@ display(renderer_win)
 # For Parasolid.
 #cylinder.write(file_name="cylinder") 
 #
-#cylinder.write(file_name="cylinder", format="stl") 
-cylinder.write(file_name="cylinder", format="brep") 
+cylinder.write(file_name="cylinder", format="vtp") 
+#cylinder.write(file_name="cylinder", format="brep") 
 #
 #print("Cylinder: num nodes: {0:d}".format(cylinder_polydata.GetNumberOfPoints()))
 
