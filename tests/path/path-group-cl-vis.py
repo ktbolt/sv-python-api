@@ -72,6 +72,13 @@ control_points = aorta_path.get_control_points()
 print("  Number of control points: {0:d}".format(len(control_points)))
 curve_points = aorta_path.get_curve_points()
 print("  Number of curve points: {0:d}".format(len(curve_points)))
+#
+point = aorta_path.get_curve_point(20)
+print("  Point 20: {0:s}".format(str(point)))
+tangent = aorta_path.get_curve_tangent(20)
+print("  Tangent 20: {0:s}".format(str(tangent)))
+normal = aorta_path.get_curve_normal(20)
+print("  Normal 20: {0:s}".format(str(normal)))
 
 ## Create renderer and graphics window.
 renderer = vtk.vtkRenderer()

@@ -14,4 +14,6 @@ path.add_control_point(cpt2)
 path.add_control_point(cpt3)
 path.add_control_point(cpt4)
 
+pt = path.get_point(2)
+print(pt)
 

@@ -1,9 +1,13 @@
 
+import collections
 import os
 import glob
-import collections
+import sv 
+from image import Image 
 
 class ProjectPluginNames(object):
+    ''' This class stores the names of SV plugin categories.
+    '''
     IMAGES = "Images"
     MESHES = "Meshes"
     MODELS = "Models"
@@ -13,11 +17,15 @@ class ProjectPluginNames(object):
     names = [ IMAGES, MESHES, MODELS, PATHS, SEGMENTATIONS, SIMULATIONS ]
 
 class ProjectPluginInstance(object):
+    ''' This class stores the names and file name for an instance of an SV plugin.
+    '''
     def __init__(self, name, file_name):
         self.name = name 
         self.file_name = file_name 
 
 class ProjectPlugin(object):
+    ''' This class stores the the plugin instances for an SV plugin category.
+    '''
     def __init__(self, name):
         self.name = name 
         self.instances = None
@@ -40,12 +48,27 @@ class ProjectPlugin(object):
             self.instances.append( ProjectPluginInstance(name, pfile) )
 
     def get_plugin_instances(self):
-        return ', '.join([inst.name for inst in self.instances]) 
+        return [inst.name for inst in self.instances] 
+        #return ', '.join([inst.name for inst in self.instances]) 
 
 class ProjectImagesPlugin(ProjectPlugin):
     def __init__(self):
         super().__init__(ProjectPluginNames.IMAGES)
         self.file_extension = 'vti'
+
+    def get_image(self, name):
+        print("[ProjectImagesPlugin.get_model] Name: {0:s}".format(name))
+        instance = None
+        for inst in self.instances:
+            if name == inst.name:
+                instance = inst
+        if instance == None:
+            print("[ProjectImagesPlugin.get_image] ERROR: Name {0:s} not found.".format(name))
+            return None
+        print("[ProjectImagesPlugin.get_image] Read image file: {0:s}".format(instance.file_name))
+        image = Image()
+        image.read_volume(instance.file_name)
+        return image
 
 class ProjectMeshesPlugin(ProjectPlugin):
     def __init__(self):
@@ -57,7 +80,21 @@ class ProjectModelsPlugin(ProjectPlugin):
         super().__init__(ProjectPluginNames.MODELS)
         self.file_extension = 'mdl'
 
+    def get_model(self, name):
+        print("[ProjectModelsPlugin.get_model] Name: {0:s}".format(name))
+        instance = None
+        for inst in self.instances:
+            if name == inst.name:
+                instance = inst
+        if instance == None:
+            print("[ProjectModelsPlugin.get_model] ERROR: Name {0:s} not found.".format(name))
+            return None
+        print("[ProjectModelsPlugin.get_model] Read model file: {0:s}".format(instance.file_name))
+        return sv.solid.Group(instance.file_name)
+
 class ProjectPathsPlugin(ProjectPlugin):
+    ''' This class is used to represent data for an SV Path plugin. 
+    '''
     def __init__(self):
         super().__init__(ProjectPluginNames.PATHS)
         self.file_extension = 'pth'
@@ -71,11 +108,25 @@ class ProjectPathsPlugin(ProjectPlugin):
         if instance == None:
             print("[ProjectPathsPlugin.get_path] ERROR: Name {0:s} not found.".format(name))
             return None
+        print("[ProjectPathsPlugin.get_path] Read path file: {0:s}".format(instance.file_name))
+        return sv.path.Group(instance.file_name)
 
 class ProjectSegmentationsPlugin(ProjectPlugin):
     def __init__(self):
         super().__init__(ProjectPluginNames.SEGMENTATIONS)
         self.file_extension = 'ctgr'
+
+    def get_contour(self, name):
+        print("[ProjectSegmentationsPlugin.get_contour] Name: {0:s}".format(name))
+        instance = None
+        for inst in self.instances:
+            if name == inst.name:
+                instance = inst
+        if instance == None:
+            print("[ProjectSegmentationsPlugin.get_contour] ERROR: Name {0:s} not found.".format(name))
+            return None
+        print("[ProjectSegmentationsPlugin.get_contour] Read contour file: {0:s}".format(instance.file_name))
+        return sv.contour.Group(instance.file_name)
 
 class ProjectSimulationsPlugin(ProjectPlugin):
     def __init__(self):
@@ -83,21 +134,29 @@ class ProjectSimulationsPlugin(ProjectPlugin):
         self.file_extension = 'sjb'
 
 class Project(object):
-    ''' 
-    This class is used to store an SV project. 
+    ''' This class is used to store an SV project. 
     '''
     def __init__(self):
         self.project_dir = None
         self.add_plugins()
+        self.plugin_names = ProjectPluginNames()
 
     def add_plugins(self):
+        self.images_plugin = ProjectImagesPlugin()
+        self.meshes_plugin = ProjectMeshesPlugin()
+        self.models_plugin = ProjectModelsPlugin()
+        self.paths_plugin = ProjectPathsPlugin()
+        self.segmentations_plugin = ProjectSegmentationsPlugin()
+        self.simulations_plugin = ProjectSimulationsPlugin()
+
+        # Create an ordered dict used to iterate over the pulgins.
         self.plugins = collections.OrderedDict()
-        self.plugins[ProjectPluginNames.IMAGES] = ProjectImagesPlugin()
-        self.plugins[ProjectPluginNames.MESHES] = ProjectMeshesPlugin()
-        self.plugins[ProjectPluginNames.MODELS] = ProjectModelsPlugin()
-        self.plugins[ProjectPluginNames.PATHS] = ProjectPathsPlugin()
-        self.plugins[ProjectPluginNames.SEGMENTATIONS] = ProjectSegmentationsPlugin()
-        self.plugins[ProjectPluginNames.SIMULATIONS] = ProjectSimulationsPlugin()
+        self.plugins[ProjectPluginNames.IMAGES] = self.images_plugin 
+        self.plugins[ProjectPluginNames.MESHES] = self.meshes_plugin 
+        self.plugins[ProjectPluginNames.MODELS] = self.models_plugin 
+        self.plugins[ProjectPluginNames.PATHS] = self.paths_plugin 
+        self.plugins[ProjectPluginNames.SEGMENTATIONS] = self.segmentations_plugin 
+        self.plugins[ProjectPluginNames.SIMULATIONS] = self.simulations_plugin 
         '''
         for name,plugin in self.plugins.items():
             print("Plugin name: {0:s}".format(name))
@@ -110,13 +169,28 @@ class Project(object):
         for name,plugin in self.plugins.items():
             plugin.get_files(project_dir)
 
-    def get_project_plugin_instances(self):
-        plugin_instances = collections.OrderedDict()
-        for name,plugin in self.plugins.items():
-            plugin_instances[name] =  plugin.get_plugin_instances()
+    def get_image(self, name):
+        return self.images_plugin.get_image(name)
+
+    def get_model(self, name):
+        return self.models_plugin.get_model(name)
+
+    def get_plugin_instances(self, plugin_name=None):
+        if plugin_name == None: 
+            plugin_instances = collections.OrderedDict()
+            for name,plugin in self.plugins.items():
+                plugin_instances[name] =  plugin.get_plugin_instances()
+        else:
+            plugin_instances = []
+            for name,plugin in self.plugins.items():
+                if name == plugin_name:
+                    plugin_instances = plugin.get_plugin_instances() 
         return plugin_instances
 
-    def get_path(self, name):
-        self.plugins[ProjectPluginNames.PATHS].get_path(name)
 
+    def get_path(self, name):
+        return self.paths_plugin.get_path(name)
+
+    def get_segmentation(self, name):
+        return self.segmentations_plugin.get_contour(name)
 
