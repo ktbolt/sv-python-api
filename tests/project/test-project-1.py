@@ -71,6 +71,11 @@ class TestProject(object):
         image.display_axis_slice('k', 255)
         self.image = image 
 
+    def show_mesh(self, project, mesh_name):
+        print(" ")
+        print("Get {0:s} mesh ... ".format(mesh_name))
+        model_group = project.get_model(model_name)
+
     def show_model(self, project, model_name):
         print(" ")
         print("Get {0:s} model ... ".format(model_name))
@@ -101,7 +106,7 @@ class TestProject(object):
         print("  Number of curve points: {0:d}".format(len(curve_points)))
         path_lines, path_control_points = self.visualization.get_path_geometry(path)
         pgeom = VisualizationGeometry(path_name, path, self.select_path)
-        self.visualization.add_polydata(pgeom, path_lines, color=[0.8, 0.0, 0.0], line_width=4.0)
+        self.visualization.add_polydata(pgeom, path_lines, color=[0.8, 0.0, 0.0], line_width=2.0)
 
     def show_segmentation(self, project, seg_name):
         print(" ")
@@ -114,7 +119,7 @@ class TestProject(object):
             contour_geom, center_point, control_points = self.visualization.get_contour_geometry(contour)
             name = seg_name+":contour:" + str(i)
             cgeom = VisualizationGeometry(name, contour, self.select_contour)
-            self.visualization.add_polydata(cgeom, contour_geom, color=[0.8, 0.8, 0.0], line_width=2.0)
+            self.visualization.add_polydata(cgeom, contour_geom, color=[0.0, 0.8, 0.0], line_width=2.0)
 
 ## Open a project.
 print("  ")
@@ -154,11 +159,15 @@ for name in seg_plugin_instances:
 
 ## Get an SV model object.
 #
-test_project.show_model(project, "demo")
+# test_project.show_model(project, "demo")
 
 ## Get an image object.
 #
-test_project.show_image(project, "sample_data-cm")
+# test_project.show_image(project, "sample_data-cm")
+
+## Get a mesh object.
+#
+test_project.show_mesh(project, "demo")
 
 ## Display geometry.
 #

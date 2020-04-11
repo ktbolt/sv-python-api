@@ -22,10 +22,13 @@ mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
 ## Set meshing options.
 #
 print("Set meshing options ... ")
-options = mesher.create_options(global_edge_size=0.75, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)
+options = mesher.create_options(global_edge_size=0.2, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)
+options.optimization = 3
+options.quality_ratio = 1.4
+options.use_mmg = True
 
 # Set local edge size on a face.
-options.local_edge_size = {'face_id':2, 'edge_size':0.2}
+#options.local_edge_size = {'face_id':2, 'edge_size':0.2}
 
 #print("options values: ")
 #[ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
@@ -35,18 +38,23 @@ options.local_edge_size = {'face_id':2, 'edge_size':0.2}
 #  Note: must load solid before setting certain options!
 #
 file_name = 'cylinder.vtp'
+file_name = '/Users/parkerda/SimVascular/DemoProject/Models/demo.vtp'
 mesher.load_model(file_name)
 
 ## Set mesher options.
 mesher.set_options(options)
 
 ## Set the face IDs for model walls.
+'''
 face_ids = ['a']
 face_ids = 1
 face_ids = []
 face_ids = [1]
 mesher.set_walls(face_ids)
+'''
 
+face_ids = [1, 2]
+mesher.set_walls(face_ids)
 
 ## Compute model boundary faces.
 mesher.compute_model_boundary_faces(angle=60.0)
