@@ -64,26 +64,29 @@ options = sv.meshing.TetGenOptions(global_edge_size=0.1, surface_mesh_flag=True,
 #options.quiet = True 
 #print("options.quiet: " + str(options.quiet))
 
-#---------------
-# add_subdomain
-#---------------
-#local_edge_size = options.create_local_edge_size_parameter(region_id=1, size=0.1)
+#-----------------
+# Local edge size 
+#-----------------
+# options.local_edge_size is a list of {'face_id': int, 'edge_size': float}.
+#
+#local_edge_size = options.create_local_edge_size_parameter(face_id=1, edge_size=0.1)
 #options.local_edge_size = local_edge_size
-#options.local_edge_size = {'region_id': 1, 'size': 0.1}
-#options.local_edge_size = {'region_id': 'a', 'size': 0.1}
+#options.local_edge_size = {'face_id': 'a', 'edge_size': 0.1}
+options.local_edge_size = {'face_id': 1, 'edge_size': 0.1}
+options.add_local_edge_size_parameter(face_id=2, edge_size=0.2)
 
 #-------------------
 # print all options
 #-------------------
 #
-#print("options values: ")
-#[ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
+print("Options values: ")
+[ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 #help(options)
 
 #--------------------
 # Set mesher options
 #--------------------
 #
-mesher.set_options(options)
+#mesher.set_options(options)
 
 

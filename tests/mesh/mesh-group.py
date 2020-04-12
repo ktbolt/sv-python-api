@@ -42,7 +42,9 @@ def init_graphics():
 ## Read an SV mesh group file. 
 #
 home = str(Path.home())
-file_name = home + "/SimVascular/DemoProject/Meshes/demo.msh"
+mesh_name = "demo.msh"
+mesh_name = "demo-test.msh"
+file_name = home + "/SimVascular/DemoProject/Meshes/" + mesh_name
 print("Read SV msh file: {0:s}".format(file_name))
 demo_meshes = sv.meshing.Group(file_name)
 #num_meshes = demo_models.number_of_models()
@@ -53,12 +55,10 @@ mesher, options = demo_meshes.get_mesh(0)
 print("Mesher type: " + str(type(mesher)))
 print("Options type: " + str(type(options)))
 options.mesh_wall_first = True
-'''
 print("Options ... ")
 values = options.get_values()
 for k,v in values.items():
     print("  {0:s}: {1:s}".format(k,str(v)))
-'''
 face_info = mesher.get_model_face_info()
 print("Mesh face info: " + face_info)
 
@@ -71,6 +71,9 @@ mesher.set_options(options)
 
 ## Generate the mesh. 
 mesher.generate_mesh()
+
+## Write the mesh.
+mesher.write_mesh(file_name=mesh_name+'.vtu')
 
 #mesh_surface = mesher.get_surface()
 #print("Number of surface mesh nodes: {0:d}".format(mesh_surface.GetNumberOfPoints()))
