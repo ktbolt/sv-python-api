@@ -72,8 +72,8 @@ options = sv.meshing.TetGenOptions(global_edge_size=0.1, surface_mesh_flag=True,
 #local_edge_size = options.create_local_edge_size_parameter(face_id=1, edge_size=0.1)
 #options.local_edge_size = local_edge_size
 #options.local_edge_size = {'face_id': 'a', 'edge_size': 0.1}
-options.local_edge_size = {'face_id': 1, 'edge_size': 0.1}
-options.add_local_edge_size_parameter(face_id=2, edge_size=0.2)
+#options.local_edge_size = {'face_id': 1, 'edge_size': 0.1}
+#options.add_local_edge_size_parameter(face_id=2, edge_size=0.2)
 
 #-------------------
 # print all options

@@ -70,10 +70,10 @@ print("Mesh face info: " + face_info)
 mesher.set_options(options)
 
 ## Generate the mesh. 
-mesher.generate_mesh()
+#mesher.generate_mesh()
 
 ## Write the mesh.
-mesher.write_mesh(file_name=mesh_name+'.vtu')
+#mesher.write_mesh(file_name=mesh_name+'.vtu')
 
 #mesh_surface = mesher.get_surface()
 #print("Number of surface mesh nodes: {0:d}".format(mesh_surface.GetNumberOfPoints()))
