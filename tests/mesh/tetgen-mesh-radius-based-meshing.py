@@ -49,8 +49,13 @@ print("Mesh face info: " + face_info)
 print("Enable radius-based meshing ... ")
 #mesher.enable_radius_based_meshing(edge_size=0.2)
 
-radiusBasedMeshing = sv.meshing.TetGenRadiusBased()
-print("  radiusBasedMeshing: " + str(dir(radiusBasedMeshing)))
+radiusBasedMeshing = sv.meshing.TetGenRadiusBased(mesher)
+#print("  radiusBasedMeshing: " + str(dir(radiusBasedMeshing)))
+#radiusBasedMeshing.compute_centerlines()
+#radiusBasedMeshing.compute_size_function(edge_size=0.2)
+#radiusBasedMeshing.write_centerlines("demo-centerlines.vtp")
+radiusBasedMeshing.load_centerlines("demo-centerlines.vtp")
+mesher.enable_radius_based_meshing(radiusBasedMeshing)
 
 if False:
     ## Generate the mesh. 
