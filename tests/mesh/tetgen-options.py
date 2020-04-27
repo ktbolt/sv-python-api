@@ -5,8 +5,8 @@ import sv
 import vtk
 
 ## Create a TetGen mesher.
-mesher = sv.meshing.create_mesher(sv.meshing.Kernel.TETGEN)
-mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
+#mesher = sv.meshing.create_mesher(sv.meshing.Kernel.TETGEN)
+#mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
 
 ## Set meshing options.
 #
@@ -69,16 +69,69 @@ options = sv.meshing.TetGenOptions(global_edge_size=0.1, surface_mesh_flag=True,
 #-----------------
 # options.local_edge_size is a list of {'face_id': int, 'edge_size': float}.
 #
-#local_edge_size = options.create_local_edge_size_parameter(face_id=1, edge_size=0.1)
-#options.local_edge_size = local_edge_size
-#options.local_edge_size = {'face_id': 'a', 'edge_size': 0.1}
-#options.local_edge_size = {'face_id': 1, 'edge_size': 0.1}
-#options.add_local_edge_size_parameter(face_id=2, edge_size=0.2)
+values = []
+values.append( {'face_id': 1, 'edge_size': 0.1} )
+options.local_edge_size = values 
+options.local_edge_size.append( options.LocalEdgeSize(face_id=2, edge_size=0.2) )
+
+#options.local_edge_size.append( {'face_id': 1, 'edge_size': 0.1} )
+
+#----------------------------
+# Radius meshing centerlines 
+#----------------------------
+if False:
+    centerlines_file = "demo-centerlines.vtp"
+    reader = vtk.vtkXMLPolyDataReader()
+    reader.SetFileName(centerlines_file)
+    reader.Update()
+    centerlines = reader.GetOutput()
+    options.radius_meshing_centerlines = centerlines 
+
+#-------------------
+# Radius meshing on 
+#-------------------
+#options.radius_meshing_on = True
+# Error checking.
+#options.radius_meshing_on = 1
+
+#----------------------
+# Radius meshing scale 
+#----------------------
+#options.radius_meshing_scale = 0.4 
+# Error checking.
+#options.radius_meshing_scale = -0.4 
+#options.radius_meshing_scale = "-0.4 "
+
+#-----------------------
+# Set sphere refinement 
+#-----------------------
+'''
+if False:
+    values = []
+    values.append( { 'edge_size':0.1, 'radius':3.74711,  'center':[0.496379, 0.752667, 1.794] } )
+    values.append( { 'edge_size':0.2, 'radius':2.0,  'center':[2.0, 2.7, 2.4] })
+    values.append( { 'edge_size':0.3, 'radius':3.0,  'center':[3.0, 3.7, 3.4] })
+    values.append( { 'edge_size':0.4, 'radius':4.0,  'center':[4.0, 4.7, 4.4] })
+    values.append( { 'edge_size':0.5, 'radius':5.0,  'center':[5.0, 5.7, 5.5] })
+    options.sphere_refinement = values
+else:
+    options.sphere_refinement.append( { 'edge_size':0.2, 'radius':2.0,  'center':[2.0, 2.7, 2.4] })
+    options.sphere_refinement.append( { 'edge_size':0.3, 'radius':3.0,  'center':[3.0, 3.7, 3.4] })
+    options.sphere_refinement.append( { 'edge_size':0.4, 'radius':4.0,  'center':[4.0, 4.7, 4.4] })
+
+    value = options.SphereRefinement(edge_size=0.3, radius=3.74711, center=[3.496379, 3.752667, 3.794])
+    print(str(value))
+    options.sphere_refinement.append( value )
+
+for value in options.sphere_refinement:
+    print("value: " + str(value))
+
+options.sphere_refinement_on = True
+'''
 
 #-------------------
 # print all options
 #-------------------
-#
 print("Options values: ")
 [ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 #help(options)

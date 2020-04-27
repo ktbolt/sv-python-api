@@ -43,7 +43,7 @@ def init_graphics():
 #
 home = str(Path.home())
 mesh_name = "demo.msh"
-mesh_name = "demo-test.msh"
+mesh_name = "demo-refine-all.msh"
 file_name = home + "/SimVascular/DemoProject/Meshes/" + mesh_name
 print("Read SV msh file: {0:s}".format(file_name))
 demo_meshes = sv.meshing.Group(file_name)
@@ -56,21 +56,18 @@ print("Mesher type: " + str(type(mesher)))
 print("Options type: " + str(type(options)))
 options.mesh_wall_first = True
 print("Options ... ")
-values = options.get_values()
-for k,v in values.items():
-    print("  {0:s}: {1:s}".format(k,str(v)))
-face_info = mesher.get_model_face_info()
-print("Mesh face info: " + face_info)
+print("Options values: ")
+[ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 
 ## Set the face IDs for model walls.
 #face_ids = [1, 2]
 #mesher.set_walls(face_ids)
 
 ## Set mesher options.
-mesher.set_options(options)
+#mesher.set_options(options)
 
 ## Generate the mesh. 
-#mesher.generate_mesh()
+mesher.generate_mesh(options=options)
 
 ## Write the mesh.
 #mesher.write_mesh(file_name=mesh_name+'.vtu')
