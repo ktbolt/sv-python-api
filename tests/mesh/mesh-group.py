@@ -43,34 +43,38 @@ def init_graphics():
 #
 home = str(Path.home())
 mesh_name = "demo.msh"
-mesh_name = "demo-refine-all.msh"
-file_name = home + "/SimVascular/DemoProject/Meshes/" + mesh_name
+mesh_name = "demo-sphere-refine"
+mesh_name = "demo-local-edge-and-sphere"
+mesh_name = "demo-local-edge-and-radius" 
+mesh_name = "demo-refine-all"
+file_name = home + "/SimVascular/DemoProject/Meshes/" + mesh_name + ".msh"
 print("Read SV msh file: {0:s}".format(file_name))
 demo_meshes = sv.meshing.Group(file_name)
 #num_meshes = demo_models.number_of_models()
 #print("Number of models: {0:d}".format(num_models))
 
-# Get a mesh for time 0.
+## Get a mesh for time 0.
 mesher, options = demo_meshes.get_mesh(0)
-print("Mesher type: " + str(type(mesher)))
-print("Options type: " + str(type(options)))
+face_info = mesher.get_model_face_info()
+print("Mesh face info: " + face_info)
+
+## Set options.
 options.mesh_wall_first = True
+options.radius_meshing_compute_centerlines = True
+
+## Print options.
 print("Options ... ")
-print("Options values: ")
 [ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 
-## Set the face IDs for model walls.
-#face_ids = [1, 2]
-#mesher.set_walls(face_ids)
-
-## Set mesher options.
-#mesher.set_options(options)
+## Set wall face IDs.
+face_ids = [1, 2]
+mesher.set_walls(face_ids)
 
 ## Generate the mesh. 
-mesher.generate_mesh(options=options)
+mesher.generate_mesh(options)
 
 ## Write the mesh.
-#mesher.write_mesh(file_name=mesh_name+'.vtu')
+mesher.write_mesh(file_name=mesh_name+'.vtu')
 
 #mesh_surface = mesher.get_surface()
 #print("Number of surface mesh nodes: {0:d}".format(mesh_surface.GetNumberOfPoints()))
