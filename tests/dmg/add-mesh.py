@@ -8,7 +8,7 @@ import sv
 import sys
 import vtk
 
-## Create a PathGroup from an SV file.
+## Read a mesh. 
 #
 home = str(Path.home())
 file_name = home + "/SimVascular/DemoProject/Meshes/demo.vtu"
@@ -20,7 +20,7 @@ print("Mesh: ");
 print("  Number of nodes: {0:d}".format(mesh.GetNumberOfPoints()))
 print("  Number of elements: {0:d}".format(mesh.GetNumberOfCells()))
 
-## Add a vtk unstructure mesh object under the SV Data Manager 'Meshes' nodes
+## Add a vtk unstructure mesh object under the SV Data Manager 'Meshes' node
 #  as a new  node named 'new_demo'.
 #
 try:

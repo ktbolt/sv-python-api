@@ -31,6 +31,5 @@ sphere_pd = sphere.GetOutput()
 ## Add the sphere polydata object under the SV Data Manager 
 #  'Paths/aorta' node as a new  node named 'aorta_sphere'.
 #
-sv.dmg.add_geometry(name="aorta_sphere", geometry=sphere_pd, plugin_type="Path", node_name=path_name)
-
+sv.dmg.add_geometry(name="aorta_sphere", geometry=sphere_pd, plugin="Path", node=path_name)
 

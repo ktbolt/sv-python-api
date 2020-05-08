@@ -1,29 +1,26 @@
-'''
-This scripts tests reading a PathGroup file.
-'''
-import sv 
-import vtk 
 from pathlib import Path
-#print(dir(sv))
-print(dir(sv.path))
+import sv
+import vtk
 
-def create_path_geometry(renderer, path):
-    """ Create geometry for the path curve and control points.
-    """
-    coords = path.get_curve_points()
+def create_segmentation_geometry(renderer, segmentation):
+    ''' Create geometry for the segmentation points and control points.
+    '''
+    coords = segmentation.get_points()
     num_pts = len(coords)
 
-    # Create contour geometry points and line connectivity.
+    ## Create segmentation geometry points and line connectivity.
+    #
     points = vtk.vtkPoints()
     points.SetNumberOfPoints(num_pts)
     lines = vtk.vtkCellArray()
-    lines.InsertNextCell(num_pts)
+    lines.InsertNextCell(num_pts+1)
     n = 0
     for pt in coords:
         points.SetPoint(n, pt[0], pt[1], pt[2])
         lines.InsertCellPoint(n)
         n += 1
     #_for pt in coords
+    lines.InsertCellPoint(0)
 
     geom = vtk.vtkPolyData()
     geom.SetPoints(points)
@@ -36,8 +33,29 @@ def create_path_geometry(renderer, path):
     actor.GetProperty().SetColor(0.0, 0.6, 0.0)
     renderer.AddActor(actor)
 
+    ## Add center point.
+    #
+    center = segmentation.get_center()
+    num_pts = 1
+    points = vtk.vtkPoints()
+    vertices = vtk.vtkCellArray()
+    pid = points.InsertNextPoint(center)
+    vertices.InsertNextCell(1)
+    vertices.InsertCellPoint(pid)
+    points_pd = vtk.vtkPolyData()
+    points_pd.SetPoints(points)
+    points_pd.SetVerts(vertices)
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputData(points_pd)
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(1.0, 0.0, 0.0)
+    actor.GetProperty().SetPointSize(5)
+    renderer.AddActor(actor)
+
     ## Add control points.
-    coords = path.get_control_points()
+    #
+    coords = segmentation.get_control_points()
     num_pts = len(coords)
     points = vtk.vtkPoints()
     vertices = vtk.vtkCellArray()
@@ -55,30 +73,8 @@ def create_path_geometry(renderer, path):
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(1.0, 0.0, 0.0)
     actor.GetProperty().SetPointSize(5)
-    renderer.AddActor(actor)
+    # renderer.AddActor(actor)
 
-#_create_path_geometry(renderer, path)
-
-## Create a PathGroup from an SV file.
-#
-home = str(Path.home())
-file_name = home+"/Simvascular/DemoProject/Paths/aorta.pth"
-aorta_group = sv.path.Group(file_name)
-print("Number of paths: {0:d}".format(aorta_group.get_time_size()))
-print("Method: {0:s}".format(aorta_group.get_method()))
-print("Path at time 0:")
-aorta_path = aorta_group.get_path(0)
-control_points = aorta_path.get_control_points()
-print("  Number of control points: {0:d}".format(len(control_points)))
-curve_points = aorta_path.get_curve_points()
-print("  Number of curve points: {0:d}".format(len(curve_points)))
-#
-point = aorta_path.get_curve_point(20)
-print("  Point 20: {0:s}".format(str(point)))
-tangent = aorta_path.get_curve_tangent(20)
-print("  Tangent 20: {0:s}".format(str(tangent)))
-normal = aorta_path.get_curve_normal(20)
-print("  Normal 20: {0:s}".format(str(normal)))
 
 ## Create renderer and graphics window.
 renderer = vtk.vtkRenderer()
@@ -87,12 +83,24 @@ renderer_win.AddRenderer(renderer)
 renderer.SetBackground(0.8, 0.8, 0.8)
 renderer_win.SetSize(500, 500)
 renderer_win.Render()
-renderer_win.SetWindowName("Vis Path")
+renderer_win.SetWindowName("Vis SV Contours")
 
-## Create path geometry.
-create_path_geometry(renderer, aorta_path)
+## Read an SV segmentation group file. 
+#
+home = str(Path.home())
+file_name = home + "/SimVascular/DemoProject/Segmentations/aorta.ctgr"
+#file_name = home + "/SimVascular/DemoProject/Segmentations/aorta.ctg"
+print("Read SV ctgr file: {0:s}".format(file_name))
+aorta_segmentations = sv.segmentation.Group(file_name)
+num_conts = aorta_segmentations.number_of_segmentations()
+print("Number of segmentations: {0:d}".format(num_conts))
+
+for i in range(num_conts):
+    cont = aorta_segmentations.get_segmentation(i)
+    create_segmentation_geometry(renderer, cont)
 
 ## Create a trackball interacter to transoform the geometry using the mouse.
+#
 interactor = vtk.vtkRenderWindowInteractor()
 interactor.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
 interactor.SetRenderWindow(renderer_win)

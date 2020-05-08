@@ -1,6 +1,58 @@
 import sv
 import vtk
 
+def create_path_geometry(renderer, path, line_color=[0.0, 0.6, 0.0], marker_color=[1.0,0.0,0.0]):
+    ''' Create geometry for the path curve and control points.
+    '''
+    coords = path.get_curve_points()
+    num_pts = len(coords)
+
+    # Create contour geometry points and line connectivity.
+    points = vtk.vtkPoints()
+    points.SetNumberOfPoints(num_pts)
+    lines = vtk.vtkCellArray()
+    lines.InsertNextCell(num_pts)
+    n = 0
+    for pt in coords:
+        points.SetPoint(n, pt[0], pt[1], pt[2])
+        lines.InsertCellPoint(n)
+        n += 1
+    #_for pt in coords
+
+    geom = vtk.vtkPolyData()
+    geom.SetPoints(points)
+    geom.SetLines(lines)
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputData(geom)
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+    actor.GetProperty().SetLineWidth(2.0)
+    actor.GetProperty().SetColor(line_color[0], line_color[1], line_color[2])
+    renderer.AddActor(actor)
+
+    ## Add control points.
+    coords = path.get_control_points()
+    num_pts = len(coords)
+    points = vtk.vtkPoints()
+    vertices = vtk.vtkCellArray()
+    for pt in coords:
+        pid = points.InsertNextPoint(pt)
+        vertices.InsertNextCell(1)
+        vertices.InsertCellPoint(pid)
+    #_for pt in coords
+    points_pd = vtk.vtkPolyData()
+    points_pd.SetPoints(points)
+    points_pd.SetVerts(vertices)
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputData(points_pd)
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(marker_color[0], marker_color[1], marker_color[2])
+    actor.GetProperty().SetPointSize(5)
+    renderer.AddActor(actor)
+
+#_create_path_geometry(renderer, path)
+
 def convert_ug_to_polydata(mesh):
     '''
     Convert mesh to polydata.
@@ -96,7 +148,7 @@ def display(renderer_win):
     interactor.SetRenderWindow(renderer_win)
     interactor.Start()
 
-def add_geom(renderer, polydata, color=[1.0, 1.0, 1.0], wire=False, edges=False):
+def add_geometry(renderer, polydata, color=[1.0, 1.0, 1.0], wire=False, edges=False):
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputData(polydata)
     mapper.SetScalarVisibility(False)
@@ -125,8 +177,7 @@ def add_sphere(renderer, center, radius, color=[1.0, 1.0, 1.0], wire=False):
     add_geom(renderer, sphere_pd, color, wire)
 
 def init_graphics(win_width, win_height):
-    '''
-    Create renderer and graphics window.
+    ''' Create renderer and graphics window.
     '''
     renderer = vtk.vtkRenderer()
     renderer_win = vtk.vtkRenderWindow()
@@ -134,7 +185,7 @@ def init_graphics(win_width, win_height):
     renderer.SetBackground(0.8, 0.8, 0.8)
     renderer_win.SetSize(win_width, win_height)
     renderer_win.Render()
-    renderer_win.SetWindowName("SV Meshing")
+    renderer_win.SetWindowName("SV Python API")
     return renderer, renderer_win 
 
 
