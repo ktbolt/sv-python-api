@@ -11,7 +11,9 @@ with open('aorta-control-points.json') as json_file:
     control_points = json.load(json_file)
 
 # Create Path object.
-path = sv.path.Path()
+#path = sv.path.Path()
+#path = sv.path_planning.Path()
+path = sv.pathplanning.Path()
 
 # Add control points.
 for pt in control_points:

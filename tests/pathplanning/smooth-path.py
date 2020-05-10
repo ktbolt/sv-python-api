@@ -11,7 +11,7 @@ import graphics as gr
 #
 home = str(Path.home())
 file_name = home+"/Simvascular/DemoProject/Paths/aorta.pth"
-aorta_group = sv.path.Group(file_name)
+aorta_group = sv.pathplanning.Group(file_name)
 print("Number of paths: {0:d}".format(aorta_group.get_time_size()))
 print("Method: {0:s}".format(aorta_group.get_method()))
 print("Aorta path:")

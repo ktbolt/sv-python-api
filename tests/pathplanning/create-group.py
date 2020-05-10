@@ -4,10 +4,10 @@ import json
 import sv 
 
 ## Create a PathGroup.
-aorta_group = sv.path.Group()
+aorta_group = sv.pathplanning.Group()
 
 ## Create Path object.
-path = sv.path.Path()
+path = sv.pathplanning.Path()
 
 # Read control points.
 with open('aorta-control-points.json') as json_file:

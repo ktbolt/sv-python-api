@@ -12,7 +12,7 @@ cpt3 = [4.0, 0.0, 0.0]
 cpt4 = [5.0, 0.0, 0.0] 
 
 ## Create Path object.
-path = sv.path.Path()
+path = sv.pathplanning.Path()
 
 ## Add control points.
 path.add_control_point(cpt1)

@@ -13,7 +13,7 @@ points = [ [2.0, 0.2, 2.2],
 ]
 
 ## Create Path object.
-path = sv.path.Path()
+path = sv.pathplanning.Path()
 
 ## Add control points.
 path.set_control_points(points)

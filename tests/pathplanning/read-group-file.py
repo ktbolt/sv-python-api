@@ -13,7 +13,7 @@ home = str(Path.home())
 path_name = "aorta"
 path_name = "aorta_subdivision"
 file_name = home+"/Simvascular/DemoProject/Paths/" + path_name + ".pth"
-aorta_group = sv.path.Group(file_name)
+aorta_group = sv.pathplanning.Group(file_name)
 print("Path group:")
 print("  Number of paths: {0:d}".format(aorta_group.get_num_paths()))
 # These are no longer exposed.
