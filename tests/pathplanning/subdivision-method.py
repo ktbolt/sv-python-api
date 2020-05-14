@@ -50,7 +50,7 @@ print("\nPath: set new subdivision method: ")
 #
 #path.set_subdivision_method(method=sv.path.SubdivisionMethod.SPACING, spacing=0.5)
 #path.set_subdivision_method(method=sv.path.SubdivisionMethod.SUBDIVISION, num_div=10)
-path.set_subdivision_method(method=sv.path.SubdivisionMethod.TOTAL, num_total=20)
+path.set_subdivision_method(method=sv.pathplanning.SubdivisionMethod.TOTAL, num_total=20)
 #
 num_subdiv = path.get_num_subdivisions()
 subdiv_method = path.get_subdivision_method()

@@ -34,6 +34,13 @@ curve_polydata = path.get_curve_polydata()
 print("Curve polydata: ")
 print("  Number of points: {0:d}".format(curve_polydata.GetNumberOfPoints()))
 
+# Get path curve frame.
+curve_frame = path.get_curve_frame(1)
+print("Curve frame: ")
+print("  Position: {0:s}".format(str(curve_frame.position)))
+print("  Normal: {0:s}".format(str(curve_frame.normal)))
+print("  Tangent: {0:s}".format(str(curve_frame.tangent)))
+
 # Create graphics window.
 win_width = 500
 win_height = 500
