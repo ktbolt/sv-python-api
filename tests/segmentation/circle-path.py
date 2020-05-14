@@ -1,4 +1,4 @@
-''' Test creating a circle segmentation using a path.
+''' Test creating a circle segmentation using a curve point on a path.
 '''
 import json
 import sv
@@ -8,11 +8,9 @@ sys.path.insert(1, '../graphics/')
 import graphics as gr
 
 def create_segmentation(renderer, path, path_index):
+    ''' Create a segmentation from a path curve point.
+    '''
     print("Create segmentation ...")    
-
-    ## Create a segmentation.
-    print("Circle segmentation: ")
-    radius = 1.0
 
     # Get path curve frame.
     print("  Path index: " + str(path_index))    
@@ -24,6 +22,7 @@ def create_segmentation(renderer, path, path_index):
     print("  Tangent: " + str(curve_frame.tangent))    
 
     # Create circle segmentation.
+    radius = 1.0
     segmentation = sv.segmentation.Circle(radius=radius, frame=curve_frame)
 
     center = segmentation.get_center()
@@ -41,8 +40,6 @@ def create_path():
         control_points = json.load(json_file)
 
     # Create Path object.
-    #path = sv.path.Path()
-    #path = sv.path_planning.Path()
     path = sv.pathplanning.Path()
 
     # Add control points.
@@ -61,6 +58,8 @@ renderer, renderer_window = gr.init_graphics(win_width, win_height)
 
 ## Create a segmentation at path index 5.
 seg1 = create_segmentation(renderer, path, path_index=5)
+normal = seg1.get_normal()
+print("Normal: " + str(normal))    
 
 ## Show segmentation.
 gr.create_segmentation_geometry(renderer, seg1, color=[1.0, 0.0, 0.0])
@@ -87,5 +86,4 @@ gr.add_sphere(renderer, [0.0,0.0,0.0], 0.5, color=[1.0, 1.0, 1.0], wire=True)
 
 # Display window.
 gr.display(renderer_window)
-
 

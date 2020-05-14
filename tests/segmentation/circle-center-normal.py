@@ -1,4 +1,4 @@
-''' Test creating a circle segmentation using a plane.
+''' Test creating a circle segmentation using a center and a normal.
 '''
 import sv
 import sys
@@ -13,20 +13,19 @@ radius = 1.0
 center = [0.0, 0.0, 0.0]
 #
 plane = vtk.vtkPlane()
-plane_center = [10.0, 0.0, 0.0]
-plane.SetOrigin(plane_center);
+plane.SetOrigin(center);
 plane_normal = [0.0, 1.0, 0.0]
 plane.SetNormal(plane_normal)
 #
-segmentation = sv.segmentation.Circle(radius=radius, plane=plane)
-center = segmentation.get_center()
+seg = sv.segmentation.Circle(radius=radius, center=center, normal=plane_normal)
+center = seg.get_center()
 print("  Center: {0:g} {1:g} {2:g}".format(center[0], center[1], center[2]))
 #
-control_points = segmentation.get_control_points()
+control_points = seg.get_control_points()
 num_control_pts = len(control_points)
 print("  Number of control_points: {0:d}".format(num_control_pts))
 #
-points = segmentation.get_points()
+points = seg.get_points()
 num_pts = len(points)
 print("  Number of points: {0:d}".format(num_pts))
 
@@ -36,10 +35,20 @@ win_height = 500
 renderer, renderer_window = gr.init_graphics(win_width, win_height)
 
 ## Show plane.
-gr.add_plane(renderer, plane_center, plane_normal, color=[1,0,1])
+gr.add_plane(renderer, center, plane_normal, color=[1,0,1])
 
 ## Show contour.
-gr.create_segmentation_geometry(renderer, segmentation)
+gr.create_segmentation_geometry(renderer, seg)
+
+## Set the circle center.
+center = [1.0, 0.0, 0.0]
+seg.set_center(center)
+gr.create_segmentation_geometry(renderer, seg, color=[1,0,0])
+
+## Set the circle normal.
+normal = [1.0, 0.0, 0.0]
+seg.set_normal(normal)
+gr.create_segmentation_geometry(renderer, seg, color=[0,1,1])
 
 # Display window.
 gr.display(renderer_window)
