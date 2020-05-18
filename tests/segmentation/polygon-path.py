@@ -1,4 +1,4 @@
-''' Test creating a circle segmentation using a curve point on a path.
+''' Test creating a polygon segmentation using a curve point on a path.
 '''
 import json
 import sv
@@ -10,6 +10,15 @@ import graphics as gr
 def create_segmentation(renderer, path, path_index):
     ''' Create a segmentation from a path curve point.
     '''
+    control_points = [
+      [-3.15842433564831, -1.07767837122083,  13.490209437441081],  
+      [-2.14692030096194, -0.763005597167648, 14.23620401811786],  
+      [-1.4866329531651,  -1.79294709610986,  14.099553553154692],  
+      [-1.6130709645804,  -2.87930015282473,  13.47775803366676],  
+      [-2.27335832035169, -3.03586243308382,  13.015448896447197],  
+      [-3.0741323401453, -2.14261536573758,    13.001546733081341]
+    ]
+
     print("Create segmentation ...")    
 
     # Get path curve frame.
@@ -20,19 +29,11 @@ def create_segmentation(renderer, path, path_index):
     print("  Position: " + str(curve_frame.position))    
     print("  Normal: " + str(curve_frame.normal))    
     print("  Tangent: " + str(curve_frame.tangent))    
-    dp = sum([curve_frame.normal[i] * curve_frame.tangent[i] for i in range(3) ])
-    print("  Tangent.Normal: " + str(dp))
 
     # Create circle segmentation.
-    radius = 1.0
-    segmentation = sv.segmentation.Circle(radius=radius, frame=curve_frame)
+    center = [ -2.30674277962187, -1.88743121940042, 13.575810494091229 ]
 
-    center = segmentation.get_center()
-    print("  Center: {0:g} {1:g} {2:g}".format(center[0], center[1], center[2]))
-    control_points = segmentation.get_control_points()
-    print("  Control_points: ")
-    print("    1: {0:s}".format(str(control_points[0])))
-    print("    2: {0:s}".format(str(control_points[1])))
+    segmentation = sv.segmentation.Polygon()
 
     return segmentation 
 
@@ -59,26 +60,19 @@ win_height = 500
 renderer, renderer_window = gr.init_graphics(win_width, win_height)
 
 ## Create a segmentation at path index 5.
-seg1 = create_segmentation(renderer, path, path_index=5)
-normal = seg1.get_normal()
-print("Normal: " + str(normal))    
+seg1 = create_segmentation(renderer, path, path_index=0)
+#normal = seg1.get_normal()
+#print("Normal: " + str(normal))    
 
 ## Show segmentation.
 gr.create_segmentation_geometry(renderer, seg1, color=[1.0, 0.0, 0.0])
-print("Set radius ...")
-
-## Change segmentation radius.
-seg1.set_radius(2.0)
-gr.create_segmentation_geometry(renderer, seg1, color=[1.0, 0.0, 1.0])
-radius = seg1.get_radius()
-print("  Radius: {0:g}".format(radius))
 
 ## Change segmentation frame.
-curve_frame = path.get_curve_frame(10)
-print("New segmentation center: {0:s}".format(str(curve_frame.position)))
-seg1.set_frame(frame=curve_frame)
-gr.create_segmentation_geometry(renderer, seg1, color=[0.0, 1.0, 1.0])
-gr.add_sphere(renderer, curve_frame.position, 0.2, color=[1.0, 1.0, 0.0], wire=True)
+#curve_frame = path.get_curve_frame(10)
+#print("New segmentation center: {0:s}".format(str(curve_frame.position)))
+#seg1.set_frame(frame=curve_frame)
+#gr.create_segmentation_geometry(renderer, seg1, color=[0.0, 1.0, 1.0])
+#gr.add_sphere(renderer, curve_frame.position, 0.2, color=[1.0, 1.0, 0.0], wire=True)
 
 # Show path.
 gr.create_path_geometry(renderer, path)

@@ -4,6 +4,7 @@ import vtk
 def create_segmentation_geometry(renderer, segmentation, color=[1.0, 1.0, 1.0]):
     ''' Create geometry for the segmentation points and control points.
     '''
+    #print("---------- gr.create_segmentation_geometry ----------")
     coords = segmentation.get_points()
     num_pts = len(coords)
 
@@ -52,6 +53,8 @@ def create_segmentation_geometry(renderer, segmentation, color=[1.0, 1.0, 1.0]):
     renderer.AddActor(actor)
     actor.GetProperty().SetPointSize(5)
     renderer.AddActor(actor)
+    return
+
 
     ## Add control points.
     #
