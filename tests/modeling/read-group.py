@@ -1,5 +1,4 @@
-'''
-This scipt tests reading in an SV Model .mdl file.
+''' This scipt tests reading in an SV Model .mdl file.
 '''
 from pathlib import Path
 import sv

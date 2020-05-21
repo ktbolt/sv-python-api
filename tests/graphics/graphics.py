@@ -1,6 +1,21 @@
 import sv
 import vtk
 
+def add_line(renderer, pt1, pt2, color=[1.0, 1.0, 1.0], width=2):
+    line = vtk.vtkLineSource()
+    line.SetPoint1(pt1);
+    line.SetPoint2(pt2)
+    line.Update()
+    polydata = line.GetOutput()
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputData(polydata)
+    mapper.ScalarVisibilityOff()
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(color[0], color[1], color[2])
+    actor.GetProperty().SetLineWidth(width)
+    renderer.AddActor(actor)
+
 def create_segmentation_geometry(renderer, segmentation, color=[1.0, 1.0, 1.0]):
     ''' Create geometry for the segmentation points and control points.
     '''
@@ -236,7 +251,7 @@ def add_geometry(renderer, polydata, color=[1.0, 1.0, 1.0], wire=False, edges=Fa
 
     if wire:
         actor.GetProperty().SetRepresentationToWireframe()
-        actor.GetProperty().SetLineWidth(1.0)
+        actor.GetProperty().SetLineWidth(2.0)
 
     if edges:
         actor.GetProperty().EdgeVisibilityOn();
