@@ -14,7 +14,6 @@ print("Mesh generation adaptive kernel names: {0:s}".format(str(sv.meshing.Adapt
 #
 adaptive_mesher = sv.meshing.create_adaptive_mesher(sv.meshing.AdaptiveKernel.TETGEN)
 print("Mesher: " + str(adaptive_mesher))
-#mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
 
 ## Set meshing options.
 #

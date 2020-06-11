@@ -8,6 +8,7 @@ import graphics as gr
 
 # Create a modeler.
 modeler = sv.modeling.Modeler(sv.modeling.Kernel.POLYDATA)
+# modeler = sv.modeling.PolyData() This does not work!
 #modeler = sv.modeling.Modeler(sv.modeling.Kernel.OPENCASCADE)
 print("Modeler type: " + str(type(modeler)))
 
@@ -16,8 +17,8 @@ print("Create a cylinder ...")
 center = [0.0, 0.0, 0.0]
 axis = [0.0, 1.0, 0.0]
 axis = [1.0, 0.0, 0.0]
-radius = 2.0 
-length = 4.0 
+radius = 4.0 
+length = 16.0 
 cylinder = modeler.cylinder(center=center, axis=axis, radius=radius, length=length)
 print("  Cylinder type: " + str(type(cylinder)))
 #
@@ -26,7 +27,12 @@ cylinder.compute_boundary_faces(angle=60.0)
 
 cylinder_pd = cylinder.get_polydata()
 print("  Cylinder: num nodes: {0:d}".format(cylinder_pd.GetNumberOfPoints()))
- 
+
+## Write the model.
+file_name = "cylinder-model-write"
+file_format = "vtp"
+cylinder.write(file_name=file_name, format=file_format)
+
 ## Create renderer and graphics window.
 win_width = 500
 win_height = 500

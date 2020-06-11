@@ -13,7 +13,6 @@ print("Mesh generation kernel names: {0:s}".format(str(sv.meshing.Kernel.names))
 #
 mesher = sv.meshing.create_mesher(sv.meshing.Kernel.TETGEN)
 print("Mesher: " + str(mesher))
-mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
 
 ## Load solid model into the mesher.
 #  Note: must load solid before setting certain options!
@@ -30,8 +29,8 @@ print("Load model: " + file_name)
 # If the model has faces already computed (i.e. has 'ModelFaceID' array) then
 # don't call this, the face IDs will no longer match the original face IDs.
 #mesher.compute_model_boundary_faces(angle=60.0)
-face_info = mesher.get_model_face_info()
-print("Mesh face info: " + face_info)
+face_ids = mesher.get_model_face_ids()
+print("Mesh face info: " + str(face_ids))
 
 ## Set meshing options.
 options = sv.meshing.TetGenOptions(global_edge_size=0.4, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)

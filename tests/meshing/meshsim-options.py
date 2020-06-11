@@ -3,18 +3,10 @@ Test setting MeshSim options using MeshSimOptions Python class.
 '''
 import sv
 
-#print("dir(sv.meshing): ")
-#print(dir(sv.meshing))
-
-# Create options object.
+## Create options object.
+#
 global_edge_size = { 'edge_size':0.1, 'absolute':True }
-options = sv.meshing.pMeshSimOptions(global_edge_size=global_edge_size, surface_mesh_flag=True, volume_mesh_flag=True)
-
-#print("dir(options): ")
-#print(dir(options))
-
-#print("dir(local edge size): ")
-#print(dir(options.local_edge_size))
+options = sv.meshing.MeshSimOptions(global_edge_size=global_edge_size, surface_mesh_flag=True, volume_mesh_flag=True)
 
 #------------------
 # global_curvature 
@@ -83,7 +75,7 @@ if True:
     print("Set surface optimization ... ")
     options.surface_optimization = 2
     # Test error conditions.
-    options.surface_optimization = -1
+    #options.surface_optimization = -1
 
 #------------------
 # volume_mesh_flag

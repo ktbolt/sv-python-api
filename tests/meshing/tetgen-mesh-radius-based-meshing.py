@@ -13,7 +13,6 @@ print("Mesh generation kernel names: {0:s}".format(str(sv.meshing.Kernel.names))
 #
 mesher = sv.meshing.create_mesher(sv.meshing.Kernel.TETGEN)
 print("Mesher: " + str(mesher))
-mesher.set_solid_modeler_kernel(sv.solid.Kernel.POLYDATA)
 
 ## Load solid model into the mesher.
 #  Note: must load solid before setting certain options!

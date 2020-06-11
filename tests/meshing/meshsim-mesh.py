@@ -2,17 +2,16 @@
 Test MeshSim interface.
 '''
 import sv
+import sys
 import vtk
+import vtk
+sys.path.insert(1, '../graphics/')
 import graphics as gr
-
-print(dir(sv.meshing))
-print("Mesh generation kernel names: {0:s}".format(str(sv.meshing.Kernel.names)))
 
 ## Create a MeshSim mesher.
 #
+#mesher = sv.meshing.MeshSim()
 mesher = sv.meshing.create_mesher(sv.meshing.Kernel.MESHSIM)
-print("Mesher: " + str(mesher))
-mesher.set_solid_modeler_kernel(sv.solid.Kernel.PARASOLID)
 
 ## Load the aorta iliac model.
 #
@@ -34,8 +33,8 @@ mesher.load_model("aorta-iliac.xmt_txt")
 #
 #  face ids: 13, 7, 63, 57, 60
 #
-face_info = mesher.get_model_face_info()
-print("Mesh face info: " + face_info)
+face_ids = mesher.get_model_face_ids()
+print("Mesh face info: " + str(face_ids))
 
 ## Set meshing options.
 #
@@ -49,11 +48,11 @@ options = mesher.create_options(global_edge_size={'edge_size':0.5, 'absolute':Tr
 print("options values: ")
 [ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 
-# Set mesher options.
-mesher.set_options(options)
-
 ## Generate the mesh. 
-mesher.generate_mesh()
+#
+# [TODO:DaveP] need to imlement this.
+#
+mesher.generate_mesh(options)
 
 #mesher.write_mesh(file_name='aorta-iliac-mesh.vtu')
 
