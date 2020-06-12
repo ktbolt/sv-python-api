@@ -15,7 +15,7 @@ mesher = sv.meshing.create_mesher(sv.meshing.Kernel.TETGEN)
 ## Set meshing options.
 #
 print("Set meshing options ... ")
-options = sv.meshing.TetGenOptions(global_edge_size=0.8, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)
+options = sv.meshing.TetGenOptions(global_edge_size=0.8, surface_mesh_flag=True, volume_mesh_flag=True) 
 
 # These are set in SV.
 #

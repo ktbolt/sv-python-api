@@ -29,8 +29,8 @@ print("Load model: " + file_name)
 # If the model has faces already computed (i.e. has 'ModelFaceID' array) then
 # don't call this, the face IDs will no longer match the original face IDs.
 #mesher.compute_model_boundary_faces(angle=60.0)
-face_info = mesher.get_model_face_info()
-print("Mesh face info: " + face_info)
+face_ids = mesher.get_model_face_ids()
+print("Mesh face info: " + str(face_ids))
 
 # Read centerlines. 
 if True:
@@ -47,13 +47,14 @@ if True:
 else:
   centerlines = mesher.compute_centerlines()
 
-## Set meshing options.
-options = sv.meshing.TetGenOptions(global_edge_size=0.4, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)
+## Set general meshing options.
+options = sv.meshing.TetGenOptions(global_edge_size=0.4, surface_mesh_flag=True, volume_mesh_flag=True)
 options.optimization = 3
 options.quality_ratio = 1.4
 #options.use_mmg = True
 options.no_bisect = True
 
+## Set radius-based meshing options.
 options.radius_meshing_centerlines = centerlines
 options.radius_meshing_scale = 0.4 
 options.radius_meshing_on = True

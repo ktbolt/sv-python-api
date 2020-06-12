@@ -33,13 +33,13 @@ face_ids = mesher.get_model_face_ids()
 print("Mesh face info: " + str(face_ids))
 
 ## Set meshing options.
-options = sv.meshing.TetGenOptions(global_edge_size=0.4, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)
+options = sv.meshing.TetGenOptions(global_edge_size=0.4, surface_mesh_flag=True, volume_mesh_flag=True)
 options.optimization = 3
 options.quality_ratio = 1.4
 options.use_mmg = True
 options.no_bisect = True
 
-# Set sphere refinement options.
+## Set sphere refinement options.
 options.sphere_refinement.append( { 'edge_size':0.2, 'radius':3.74711,  'center':[1.41902, -1.04231, 0.0785005] })
 options.sphere_refinement_on = True 
 

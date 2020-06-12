@@ -36,7 +36,7 @@ print("Mesh face info: " + str(face_ids))
 
 ## Set meshing options.
 #
-options = sv.meshing.TetGenOptions(global_edge_size=0.5, surface_mesh_flag=True, volume_mesh_flag=True, mesh_wall_first=True)
+options = sv.meshing.TetGenOptions(global_edge_size=0.5, surface_mesh_flag=True, volume_mesh_flag=True)
 options.optimization = 3
 options.quality_ratio = 1.4
 options.use_mmg = True

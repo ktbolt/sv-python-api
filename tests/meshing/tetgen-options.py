@@ -45,8 +45,8 @@ print("Options type {0:s} ".format(str(type(options))))
 #
 values = []
 values.append( {'face_id': 1, 'edge_size': 0.1} )
-options.local_edge_size = values 
-options.local_edge_size.append( options.LocalEdgeSize(face_id=2, edge_size=0.2) )
+#options.local_edge_size = values 
+#options.local_edge_size.append( options.LocalEdgeSize(face_id=2, edge_size=0.2) )
 
 #options.local_edge_size.append( {'face_id': 1, 'edge_size': 0.1} )
 

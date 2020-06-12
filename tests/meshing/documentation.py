@@ -16,5 +16,14 @@ import sv
 
 #help(sv.meshing.TetGenOptions)
 
-help(sv.meshing.TetGenOptions.boundary_layer_inside)
+#help(sv.meshing.TetGenOptions.boundary_layer_inside)
+
+#help(sv.meshing.TetGenOptions.local_edge_size)
+
+#help(sv.meshing.TetGenOptions.radius_meshing_centerlines)
+
+#help(sv.meshing.TetGenOptions.radius_meshing_scale)
+
+help(sv.meshing.TetGenOptions.sphere_refinement)
+
 
