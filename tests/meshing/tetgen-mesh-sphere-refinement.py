@@ -40,8 +40,15 @@ options.use_mmg = True
 options.no_bisect = True
 
 ## Set sphere refinement options.
-options.sphere_refinement.append( { 'edge_size':0.2, 'radius':3.74711,  'center':[1.41902, -1.04231, 0.0785005] })
+#
+sphere1 = { 'edge_size':0.2, 'radius':3.74711,  'center':[1.41902, -1.04231, 0.0785005] }
+options.sphere_refinement.append( sphere1 ) 
 options.sphere_refinement_on = True 
+# Check errors.
+sphere2 = { 'bedge_size':0.2, 'radius':3.74711,  'center':[1.41902, -1.04231, 0.0785005] }
+#sphere2 = { 'edge_size':0.2, 'radius':3.74711,  'center':[1.41902] }
+#sphere2 = { 'edge_size':0.2, 'radius':'a',  'center':[1.41902, -1.04231, 0.0785005] }
+#options.sphere_refinement.append( sphere2 ) 
 
 ## Print options.
 print("Options values: ")

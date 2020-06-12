@@ -48,9 +48,11 @@ options.local_edge_size = [ {'face_id':1, 'edge_size':0.3} ]
 options.local_edge_size_on = True 
 #
 # Error check.
-#options.local_edge_size = [ {'bface_id':1, 'edge_size':0.3} ]
-#options.local_edge_size = [ {'face_id':'a', 'edge_size':0.3} ]
-#options.local_edge_size = [ 1, 0.3 ]
+#local_edge_size = [ {'bface_id':1, 'edge_size':0.3} ]
+#local_edge_size = [ {'face_id':1, 'jedge_size':0.3} ]
+#local_edge_size = [ {'face_id':'a', 'edge_size':0.3} ]
+#local_edge_size = 1
+#options.local_edge_size.append( local_edge_size )
 
 ## Print options values
 [ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
