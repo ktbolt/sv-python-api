@@ -3,10 +3,25 @@ Test the sv.geometry.LoftNurbsOptions() class.
 '''
 import sv
 
-loft_nurbs_options = sv.geometry.LoftNurbsOptions()
-print(dir(loft_nurbs_options))
-print("loft_nurbs_options.u_knot_span_type: " + str(loft_nurbs_options.u_knot_span_type))
+options = sv.geometry.LoftNurbsOptions()
+print(dir(options)) 
 
-loft_nurbs_options.u_knot_span_type = "fred";
-print("loft_nurbs_options.u_knot_span_type: " + str(loft_nurbs_options.u_knot_span_type))
+print("\n\nKnot span types: ")
+print("  AVERAGE: {0:s}".format(options.knot_span_types.AVERAGE))
+
+print("\n\nOption attributes: ")
+print("  u_degree: " + str(options.u_degree))
+
+## Print all options
+#
+print("\n\nOptions values: ")
+[ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
+print("\n\n")
+
+#print("  AVERAGE: {0:s}".format(options.KnotSpanType.AVERAGE))
+#print("  DERIVATIVE: {0:s}".format(options.KnotSpanType.DERIVATIVE))
+#print("  EQUAL: {0:s}".format(options.KnotSpanType.EQUAL))
+
+#options.KnotSpanType_AVERAGE
+#options.KnotSpanType_DERIVATIVE
 

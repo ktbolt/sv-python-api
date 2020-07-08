@@ -1,0 +1,21 @@
+
+===========================================================================
+ Lofting
+===========================================================================
+
+--------------------------------------------------
+ sv lofting aorta
+--------------------------------------------------
+
+[CreateLoftSurface] Loft with spline 
+[CreateLoftSurface]   useLinearSampleAlongLength: 1
+[CreateLoftSurface]   useFFT: 0
+[CreateLoftSurface]   numOutPtsAlongLength: 468
+[CreateLoftSurface]   newNumSamplingPts: 60
+[CreateLoftSurface]   numPtsInLinearSampleAlongLength: 4680
+[CreateLoftSurface]   splineType: 0
+[CreateLoftSurface]   bias: 0.000
+[CreateLoftSurface]   tension: 0.000
+[CreateLoftSurface]   continuity: 0.000
+
+

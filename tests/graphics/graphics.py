@@ -161,10 +161,9 @@ def convert_ug_to_polydata(mesh):
     return polydata 
 
 def create_contour_geometry(renderer, contour):
-    """ 
-    Create geometry for the contour points and control points.
+    """ Create geometry for the contour points and control points.
     """
-    coords = contour.get_contour_points()
+    coords = contour.get_points()
     num_pts = len(coords)
 
     ## Create contour geometry points and line connectivity.

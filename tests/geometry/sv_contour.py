@@ -3,6 +3,23 @@ from pathlib import Path
 import sv
 import vtk
 
+def get_profile_contour(gr, renderer, contours, cid, npts):
+    cont = contours[cid]
+    gr.create_contour_geometry(renderer, cont)
+    cont_pd = cont.get_polydata()
+    cont_ipd = sv.geometry.interpolate_closed_curve(polydata=cont_pd, number_of_points=npts)
+    gr.add_geometry(renderer, cont_ipd)
+    return cont_ipd
+
+def add_sphere(gr, renderer, cont_pd, radius):
+    """ Show two points on a profile.
+    """
+    pt = 3*[0.0]
+    cont_pd.GetPoints().GetPoint(0, pt)
+    gr.add_sphere(renderer, pt, radius)
+    cont_pd.GetPoints().GetPoint(4, pt)
+    gr.add_sphere(renderer, pt, radius, color=[0,1,0])
+
 ## Read an SV contour group file. 
 #
 def read_contours():
@@ -10,12 +27,12 @@ def read_contours():
     file_name = home + "/SimVascular/DemoProject/Segmentations/aorta.ctgr"
     #file_name = home + "/SimVascular/DemoProject/Segmentations/aorta.ctg"
     print("Read SV ctgr file: {0:s}".format(file_name))
-    contour_group = sv.contour.Group(file_name)
-    num_conts = contour_group.number_of_contours()
+    contour_group = sv.segmentation.Group(file_name)
+    num_conts = contour_group.number_of_segmentations()
     contours = []
 
     for i in range(num_conts):
-        cont = contour_group.get_contour(i)
+        cont = contour_group.get_segmentation(i)
         contours.append(cont)
 
     print("Number of contours: {0:d}".format(num_conts))

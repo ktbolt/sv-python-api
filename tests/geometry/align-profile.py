@@ -3,7 +3,9 @@ Test aligining two profiles.
 '''
 from pathlib import Path
 import sv
+import sys
 import vtk
+sys.path.insert(1, '../graphics/')
 import graphics as gr
 import sv_contour 
 
@@ -12,39 +14,59 @@ win_width = 500
 win_height = 500
 renderer, renderer_window = gr.init_graphics(win_width, win_height)
 
+num_samples = 30
+num_samples = 60
 num_samples = 20
 
 ## Read contours.
+#
 contours = sv_contour.read_contours()
 
-contour1 = contours[10]
-center = contour1.get_center()
-points1 = contour1.get_contour_points()
-cpoints1 = contour1.get_control_points()
-contour1_polydata = contour1.get_polydata()
-gr.create_contour_geometry(renderer, contour1)
-contour1_ipolydata = sv.geometry.interpolate_closed_curve(polydata=contour1_polydata, number_of_points=num_samples)
+## cont1 
+#
+cont1 = contours[10]
+center = cont1.get_center()
+cont1_polydata = cont1.get_polydata()
+gr.create_contour_geometry(renderer, cont1)
+
+# Create interpolated geometry for the contour.
+cont1_ipd = sv.geometry.interpolate_closed_curve(cont1_polydata, num_samples)
+
+# Get two points on interpolated curve.
 pt = 3*[0.0]
-contour1_ipolydata.GetPoints().GetPoint(0, pt)
+cont1_ipd.GetPoints().GetPoint(0, pt)
 gr.add_sphere(renderer, pt, radius, color=[1,0,0])
-contour1_ipolydata.GetPoints().GetPoint(4, pt)
+
+cont1_ipd.GetPoints().GetPoint(4, pt)
+gr.add_sphere(renderer, pt, radius, color=[0,1,0])
+gr.add_geometry(renderer, cont1_ipd)
+
+## cont2 
+#
+cont2 = contours[11]
+points2 = cont2.get_points()
+cpoints2 = cont2.get_control_points()
+cont2_polydata = cont2.get_polydata()
+gr.create_contour_geometry(renderer, cont2)
+cont2_ipd = sv.geometry.interpolate_closed_curve(cont2_polydata, num_samples)
+
+## Align contours.
+use_dist = False
+use_dist = True
+cont2_align_pd = sv.geometry.align_profile(cont1_ipd, cont2_ipd, use_dist)
+
+# Get two points on aligned curve.
+pt = 3*[0.0]
+#cont2_ipd.GetPoints().GetPoint(0, pt)
+#gr.add_sphere(renderer, pt, radius, color=[0,0,1])
+
+cont2_align_pd.GetPoints().GetPoint(0, pt)
+gr.add_sphere(renderer, pt, radius, color=[1,0,0])
+#
+cont2_align_pd.GetPoints().GetPoint(4, pt)
 gr.add_sphere(renderer, pt, radius, color=[0,1,0])
 
-contour2 = contours[11]
-points2 = contour2.get_contour_points()
-cpoints2 = contour2.get_control_points()
-contour2_polydata = contour2.get_polydata()
-gr.create_contour_geometry(renderer, contour2)
-contour2_ipolydata = sv.geometry.interpolate_closed_curve(polydata=contour2_polydata, number_of_points=num_samples)
-
-contour2_align_polydata = sv.geometry.align_profile(contour1_ipolydata, contour2_ipolydata, use_distance=True)
-#contour2_align_polydata = sv.geometry.interpolate_closed_curve(polydata=contour2_align_polydata, number_of_points=num_samples)
-pt = 3*[0.0]
-contour2_align_polydata.GetPoints().GetPoint(0, pt)
-gr.add_sphere(renderer, pt, radius, color=[1,0,0])
-contour2_align_polydata.GetPoints().GetPoint(4, pt)
-gr.add_sphere(renderer, pt, radius, color=[0,1,0])
-
+gr.add_geometry(renderer, cont2_ipd)
 
 ## Show geometry.
 #

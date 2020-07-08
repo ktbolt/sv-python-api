@@ -1,9 +1,11 @@
 '''
-Test the geometry.sv.geometry.average_point method.
+Test the sv.geometry.average_point method.
 '''
 from pathlib import Path
 import sv
+import sys
 import vtk
+sys.path.insert(1, '../graphics/')
 import graphics as gr
 import sv_contour 
 
@@ -20,26 +22,27 @@ gr.create_contour_geometry(renderer, contour)
 print("contour_polydata type: " + str(type(contour_polydata)))
 
 print("Create a cylinder.")
-kernel = sv.solid.Kernel.POLYDATA
-modeler = sv.solid.Modeler(kernel)
+kernel = sv.modeling.Kernel.POLYDATA
+modeler = sv.modeling.Modeler(kernel)
 center = [0.0, 0.0, 0.0]
 axis = [0.0, 0.0, 1.0]
 radius = 1.5
 length = 10.0
-cylinder = modeler.cylinder(radius, length, center, axis)
+cylinder = modeler.cylinder(center, axis, radius, length)
 cylinder_polydata = cylinder.get_polydata()
-gr.add_geom(renderer, cylinder_polydata, color=[1.0, 0.0, 0.0], wire=True)
+gr.add_geometry(renderer, cylinder_polydata, color=[1.0, 0.0, 0.0], wire=True)
 
 ## Compute average point. 
 avg_point = sv.geometry.average_point(cylinder_polydata)
 #avg_point = sv.geometry.average_point(contour_polydata)
+print("Average point: {0:s}".format(str(avg_point)))
 
 sphere = vtk.vtkSphereSource()
 sphere.SetCenter(avg_point[0], avg_point[1], avg_point[2])
 sphere.SetRadius(0.2)
 sphere.Update()
 sphere_pd = sphere.GetOutput()
-gr.add_geom(renderer, sphere_pd, color=[1.0, 1.0, 1.0])
+gr.add_geometry(renderer, sphere_pd, color=[1.0, 1.0, 1.0])
 
 ## Show geometry.
 #

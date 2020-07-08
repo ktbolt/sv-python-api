@@ -25,7 +25,13 @@ def create_segmentation(renderer, path, path_index):
 
     # Create circle segmentation.
     radius = 1.0
+    ''' Does not work.
     segmentation = sv.segmentation.Circle(radius=radius, frame=curve_frame)
+    '''
+    segmentation = sv.segmentation.Circle()
+    segmentation.set_frame(curve_frame)
+    segmentation.set_radius(radius)
+    #segmentation.set_center(center)
 
     center = segmentation.get_center()
     print("  Center: {0:g} {1:g} {2:g}".format(center[0], center[1], center[2]))
