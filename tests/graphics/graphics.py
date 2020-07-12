@@ -19,9 +19,12 @@ def add_line(renderer, pt1, pt2, color=[1.0, 1.0, 1.0], width=2):
 def create_segmentation_geometry(renderer, segmentation, color=[1.0, 1.0, 1.0]):
     ''' Create geometry for the segmentation points and control points.
     '''
-    #print("---------- gr.create_segmentation_geometry ----------")
+    print("---------- gr.create_segmentation_geometry ----------")
     coords = segmentation.get_points()
     num_pts = len(coords)
+    print("[gr.create_segmentation_geometry] num_pts: {0:d}".format(num_pts))
+    if num_pts == 0:
+        return
 
     ## Create segmentation geometry points and line connectivity.
     #
