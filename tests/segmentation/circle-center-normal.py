@@ -18,6 +18,12 @@ plane_normal = [0.0, 1.0, 0.0]
 plane.SetNormal(plane_normal)
 #
 seg = sv.segmentation.Circle(radius=radius, center=center, normal=plane_normal)
+
+# Error test;
+#seg = sv.segmentation.Circle(radius=radius)
+#seg = sv.segmentation.Circle(radius=radius, center=center)
+#path_frame = sv.pathplanning.PathFrame()
+#seg = sv.segmentation.Circle(radius=radius, center=center, frame=path_frame)
 center = seg.get_center()
 print("  Center: {0:g} {1:g} {2:g}".format(center[0], center[1], center[2]))
 #

@@ -54,6 +54,7 @@ def create_segmentation_geometry(renderer, segmentation, color=[1.0, 1.0, 1.0]):
     ## Add center point.
     #
     center = segmentation.get_center()
+    print("gr.create_segmentation_geometry] Center: {0:g} {1:g} {2:g}".format(center[0], center[1], center[2]))
     num_pts = 1
     points = vtk.vtkPoints()
     vertices = vtk.vtkCellArray()
