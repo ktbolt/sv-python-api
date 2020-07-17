@@ -1,5 +1,6 @@
 ''' Test reading in an SV contour group file for level set contours.
 '''
+import json
 from pathlib import Path
 import sv
 import sys
@@ -15,6 +16,13 @@ print("Read SV ctgr file: {0:s}".format(file_name))
 aorta_segmentations = sv.segmentation.Group(file_name)
 num_conts = aorta_segmentations.number_of_segmentations()
 print("Number of segmentations: {0:d}".format(num_conts))
+
+''' write contour points to a file.
+seg = aorta_segmentations.get_segmentation(0)
+points = seg.get_points()
+with open('level-set-contour-points.json', 'w') as json_file:
+    json.dump(points, json_file)
+'''
 
 ## Create renderer and graphics window.
 win_width = 500

@@ -1,42 +1,35 @@
-''' Test creating a polygon segmentation using a set of control points.
+''' Test creating a contour segmentation using contour points.
 '''
+import json
 import sv
 import sys
 import vtk
 sys.path.insert(1, '../graphics/')
 import graphics as gr
 
-## Control points.
+## Read in contour points.
 #
-points = [ 
-  [-3.0, 0.0, 1.0],
-  [ -1.0, 0.0, 1.0],
-  [ -1.0, 0.0, -1.0],
-  [ -3.0, 0.0, -1.0]
-]
- 
-## Create a segmentation using the Polygon class. 
+with open('level-set-contour-points.json') as json_file:
+    contour_points = json.load(json_file)
+print("Read {0:d} contour points.".format(len(contour_points)))
+
+## Create a segmentation using the Contour class. 
 #
-print("Create poylgon segmentation ...")
-if False:
-    seg = sv.segmentation.Polygon(control_points=points)
+print("Create contour segmentation ...")
+set_points = False
+set_points = True
+if set_points:
+    print("Set contour points.")
+    seg = sv.segmentation.Contour()
+    seg.set_contour_points(contour_points)
 else:
-    print("Set control points.")
-    seg = sv.segmentation.Polygon(control_points=points)
-    seg.set_control_points(control_points=points)
+    seg = sv.segmentation.Contour(contour_points)
 
 center = seg.get_center()
 print("  Center: {0:g} {1:g} {2:g}".format(center[0], center[1], center[2]))
 #
 normal = seg.get_normal()
 print("  Normal: {0:g} {1:g} {2:g}".format(normal[0], normal[1], normal[2]))
-#
-control_points = seg.get_control_points()
-num_control_pts = len(control_points)
-print("  Number of control_points: {0:d}".format(num_control_pts))
-print("  Control points: ")
-for pt in control_points:
-    print("  {0:s}".format(str(pt)))
 #
 points = seg.get_points()
 num_pts = len(points)

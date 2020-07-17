@@ -1,5 +1,4 @@
-''' Test creating a polygon segmentation using a normal and 
-    a set of control points.
+''' Test creating a polygon segmentation using a set of control points.
 '''
 import sv
 import sys
@@ -7,7 +6,7 @@ import vtk
 sys.path.insert(1, '../graphics/')
 import graphics as gr
 
-## Create a segmentation using the Polygon class. 
+## Define control points.
 #
 points = [ 
   [-3.0, 0.0, 1.0],
@@ -15,6 +14,8 @@ points = [
   [ -1.0, 0.0, -1.0],
   [ -3.0, 0.0, -1.0]
 ]
+ 
+## Create a segmentation using the Polygon class. 
 #
 print("Create spline poylgon segmentation ...")
 if True:
