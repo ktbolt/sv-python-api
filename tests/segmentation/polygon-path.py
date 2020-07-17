@@ -33,7 +33,8 @@ def create_segmentation(renderer, path, path_index):
     # Create circle segmentation.
     center = [ -2.30674277962187, -1.88743121940042, 13.575810494091229 ]
 
-    segmentation = sv.segmentation.Polygon()
+    segmentation = sv.segmentation.Polygon(control_points)
+    #segmentation = sv.segmentation.Polygon(control_points=control_points)
 
     return segmentation 
 

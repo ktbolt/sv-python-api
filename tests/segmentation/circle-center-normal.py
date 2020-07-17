@@ -27,10 +27,6 @@ seg = sv.segmentation.Circle(radius=radius, center=center, normal=plane_normal)
 center = seg.get_center()
 print("  Center: {0:g} {1:g} {2:g}".format(center[0], center[1], center[2]))
 #
-control_points = seg.get_control_points()
-num_control_pts = len(control_points)
-print("  Number of control_points: {0:d}".format(num_control_pts))
-#
 points = seg.get_points()
 num_pts = len(points)
 print("  Number of points: {0:d}".format(num_pts))

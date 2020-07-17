@@ -17,9 +17,9 @@ mesher = sv.meshing.TetGen()
 #
 #  Note: must load solid before setting certain options!
 #
-file_name = '/Users/parkerda/SimVascular/DemoProject/Models/demo.vtp'
 file_name = 'cylinder-model.stl'
 file_name = 'cylinder-model.vtp'
+file_name = '/Users/parkerda/SimVascular/DemoProject/Models/demo.vtp'
 mesher.load_model(file_name)
 
 ## Set the face IDs for model walls.
@@ -64,7 +64,7 @@ mesher.write_mesh(file_name='cylinder-mesh.vtu')
 
 ## Show the mesh.
 #
-show_mesh = False
+show_mesh = True
 if show_mesh:
     ## Create renderer and graphics window.
     win_width = 500

@@ -48,7 +48,7 @@ print("Mesh face IDs: " + str(face_ids))
 print("Options ... ")
 [ print("  {0:s}:{1:s}".format(key,str(value))) for (key, value) in sorted(options.get_values().items()) ]
 
-sys.exit(0)
+#sys.exit(0)
 
 ## Set wall face IDs.
 face_ids = [1, 2]
@@ -58,7 +58,7 @@ mesher.set_walls(face_ids)
 mesher.generate_mesh(options)
 
 ## Write the mesh.
-mesher.write_mesh(file_name=mesh_name+'.vtu')
+#mesher.write_mesh(file_name=mesh_name+'.vtu')
 
 #mesh_surface = mesher.get_surface()
 #print("Number of surface mesh nodes: {0:d}".format(mesh_surface.GetNumberOfPoints()))

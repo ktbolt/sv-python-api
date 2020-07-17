@@ -35,10 +35,6 @@ def create_segmentation(renderer, path, path_index):
 
     center = segmentation.get_center()
     print("  Center: {0:g} {1:g} {2:g}".format(center[0], center[1], center[2]))
-    control_points = segmentation.get_control_points()
-    print("  Control_points: ")
-    print("    1: {0:s}".format(str(control_points[0])))
-    print("    2: {0:s}".format(str(control_points[1])))
 
     return segmentation 
 
