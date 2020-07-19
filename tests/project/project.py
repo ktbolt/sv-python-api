@@ -109,7 +109,7 @@ class ProjectPathsPlugin(ProjectPlugin):
             print("[ProjectPathsPlugin.get_path] ERROR: Name {0:s} not found.".format(name))
             return None
         print("[ProjectPathsPlugin.get_path] Read path file: {0:s}".format(instance.file_name))
-        return sv.path.Group(instance.file_name)
+        return sv.pathplanning.Group(instance.file_name)
 
 class ProjectSegmentationsPlugin(ProjectPlugin):
     def __init__(self):
@@ -126,7 +126,7 @@ class ProjectSegmentationsPlugin(ProjectPlugin):
             print("[ProjectSegmentationsPlugin.get_contour] ERROR: Name {0:s} not found.".format(name))
             return None
         print("[ProjectSegmentationsPlugin.get_contour] Read contour file: {0:s}".format(instance.file_name))
-        return sv.contour.Group(instance.file_name)
+        return sv.segmentation.Group(instance.file_name)
 
 class ProjectSimulationsPlugin(ProjectPlugin):
     def __init__(self):

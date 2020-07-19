@@ -72,6 +72,7 @@ mesher.write_mesh(file_name=model_name+'-local-edge-mesh.vtu')
 ## Show the mesh.
 #
 show_mesh = False
+show_mesh = True 
 if show_mesh:
     win_width = 500
     win_height = 500
@@ -79,20 +80,20 @@ if show_mesh:
 
     #mesh_polydata = gr.convert_ug_to_polydata(mesh)
     mesh_surface = mesher.get_surface()
-    gr.add_geom(renderer, mesh_surface, color=[1.0, 1.0, 1.0], wire=True, edges=True)
-    #gr.add_geom(renderer, mesh_polydata, color=[1.0, 1.0, 1.0], wire=False, edges=True)
+    gr.add_geometry(renderer, mesh_surface, color=[1.0, 1.0, 1.0], wire=True, edges=True)
+    #gr.add_geometry(renderer, mesh_polydata, color=[1.0, 1.0, 1.0], wire=False, edges=True)
 
     #mesh_model_polydata = mesher.get_model_polydata()
-    #gr.add_geom(renderer, mesh_model_polydata, color=[0.0, 1.0, 1.0], wire=True, edges=True)
+    #gr.add_geometry(renderer, mesh_model_polydata, color=[0.0, 1.0, 1.0], wire=True, edges=True)
 
     face1_polydata = mesher.get_face_polydata(1)
-    gr.add_geom(renderer, face1_polydata, color=[1.0, 0.0, 0.0], wire=False, edges=True)
+    gr.add_geometry(renderer, face1_polydata, color=[1.0, 0.0, 0.0], wire=False, edges=True)
 
     face2_polydata = mesher.get_face_polydata(2)
-    gr.add_geom(renderer, face2_polydata, color=[0.0, 1.0, 0.0], wire=False, edges=True)
+    gr.add_geometry(renderer, face2_polydata, color=[0.0, 1.0, 0.0], wire=False, edges=True)
 
     face3_polydata = mesher.get_face_polydata(3)
-    gr.add_geom(renderer, face3_polydata, color=[0.0, 0.0, 1.0], wire=False, edges=True)
+    gr.add_geometry(renderer, face3_polydata, color=[0.0, 0.0, 1.0], wire=False, edges=True)
 
     gr.display(renderer_window)
 

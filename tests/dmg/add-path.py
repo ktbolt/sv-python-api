@@ -10,8 +10,8 @@ import sv
 #
 home = str(Path.home())
 file_name = home + "/SimVascular/DemoProject/Paths/aorta.pth"
-aorta_group = sv.path.Group(file_name)
-print("Number of paths: {0:d}".format(aorta_group.get_time_size()))
+aorta_group = sv.pathplanning.Group(file_name)
+print("Number of paths: {0:d}".format(aorta_group.get_num_paths()))
 print("Method: {0:s}".format(aorta_group.get_method()))
 
 ## Get the path at time 0.

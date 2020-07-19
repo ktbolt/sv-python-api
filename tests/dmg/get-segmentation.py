@@ -20,7 +20,10 @@ for i in range(num_segs):
     cont = segmentation_group.get_segmentation(i)
     center = cont.get_center()
     path_point = cont.get_path_point()
-    control_points = cont.get_control_points()
+    try:
+        control_points = cont.get_control_points()
+    except:
+        control_points = []
     segmentation_points = cont.get_points()
     print("Type: {0:s}".format(cont.get_type()))
     print("Center: {0:s}".format(str(center)))

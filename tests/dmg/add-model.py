@@ -11,8 +11,8 @@ import sv
 home = str(Path.home())
 file_name = home + "/SimVascular/DemoProject/Models/demo.mdl"
 print("Read SV mdl file: {0:s}".format(file_name))
-demo_models = sv.solid.Group(file_name)
-num_models = demo_models.number_of_models()
+demo_models = sv.modeling.Group(file_name)
+num_models = demo_models.get_num_models()
 print("Number of models: {0:d}".format(num_models))
 
 ## Add the Python model object under the SV Data Manager 'Model' nodes

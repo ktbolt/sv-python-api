@@ -45,7 +45,6 @@ gr.add_geometry(renderer, cont1_ipd)
 #
 cont2 = contours[11]
 points2 = cont2.get_points()
-cpoints2 = cont2.get_control_points()
 cont2_polydata = cont2.get_polydata()
 gr.create_contour_geometry(renderer, cont2)
 cont2_ipd = sv.geometry.interpolate_closed_curve(cont2_polydata, num_samples)

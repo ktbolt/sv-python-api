@@ -271,7 +271,7 @@ class Visualization(object):
     def get_contour_geometry(self, contour):
         ''' Create geometry for the contour points and control points.
         '''
-        coords = contour.get_contour_points()
+        coords = contour.get_points()
         num_pts = len(coords)
 
         ## Create contour geometry points and line connectivity.
@@ -308,18 +308,21 @@ class Visualization(object):
 
         ## Add control points.
         #
-        coords = contour.get_control_points()
-        num_pts = len(coords)
-        control_points = vtk.vtkPoints()
-        vertices = vtk.vtkCellArray()
-        for pt in coords:
-            pid = control_points.InsertNextPoint(pt)
-            vertices.InsertNextCell(1)
-            vertices.InsertCellPoint(pid)
-        #_for pt in coords
-        control_points_pd = vtk.vtkPolyData()
-        control_points_pd.SetPoints(control_points)
-        control_points_pd.SetVerts(vertices)
+        try:
+            coords = contour.get_control_points()
+            num_pts = len(coords)
+            control_points = vtk.vtkPoints()
+            vertices = vtk.vtkCellArray()
+            for pt in coords:
+                pid = control_points.InsertNextPoint(pt)
+                vertices.InsertNextCell(1)
+                vertices.InsertCellPoint(pid)
+            #_for pt in coords
+            control_points_pd = vtk.vtkPolyData()
+            control_points_pd.SetPoints(control_points)
+            control_points_pd.SetVerts(vertices)
+        except:
+            control_points_pd = None
 
         return contour_pd, center_point, control_points_pd
 

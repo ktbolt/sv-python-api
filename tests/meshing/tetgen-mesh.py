@@ -1,5 +1,6 @@
-'''
-Test the TetGen class interface.
+''' Test the TetGen class interface.
+
+    Note: Be careful with global_edge_size, must match model Remesh Size resolution.
 '''
 import sv
 import sys
@@ -47,8 +48,9 @@ print("Mesh face ids: " + str(face_ids))
 
 ## Set meshing options.
 #
+# Note: Be careful with global_edge_size, must match model Remesh Size resolution.
 print("Set meshing options ... ")
-options = sv.meshing.TetGenOptions(global_edge_size=0.8, surface_mesh_flag=True, volume_mesh_flag=True)
+options = sv.meshing.TetGenOptions(global_edge_size=0.4, surface_mesh_flag=True, volume_mesh_flag=True)
 
 ## Generate the mesh. 
 mesher.generate_mesh(options)

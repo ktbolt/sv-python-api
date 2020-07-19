@@ -74,7 +74,7 @@ class TestProject(object):
     def show_mesh(self, project, mesh_name):
         print(" ")
         print("Get {0:s} mesh ... ".format(mesh_name))
-        model_group = project.get_model(model_name)
+        #model_group = project.get_model(model_name)
 
     def show_model(self, project, model_name):
         print(" ")
@@ -96,7 +96,7 @@ class TestProject(object):
         print(" ")
         print("Get path group {0:s}: ".format(path_name))
         path_group = project.get_path(path_name)
-        print("  Number of paths: {0:d}".format(path_group.get_time_size()))
+        print("  Number of paths: {0:d}".format(path_group.get_num_paths()))
         print("  Method: {0:s}".format(path_group.get_method()))
         print(" ")
         path = path_group.get_path(0)
@@ -112,10 +112,10 @@ class TestProject(object):
         print(" ")
         print("Get {0:s} segmentation ... ".format(seg_name))
         segmentation = project.get_segmentation(seg_name)
-        num_conts = segmentation.number_of_contours()
+        num_conts = segmentation.number_of_segmentations()
         print("  Number of contours: {0:d}".format(num_conts))
         for i in range(num_conts):
-            contour = segmentation.get_contour(i)
+            contour = segmentation.get_segmentation(i)
             contour_geom, center_point, control_points = self.visualization.get_contour_geometry(contour)
             name = seg_name+":contour:" + str(i)
             cgeom = VisualizationGeometry(name, contour, self.select_contour)

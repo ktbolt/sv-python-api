@@ -217,24 +217,27 @@ def create_contour_geometry(renderer, contour):
 
     ## Add control points.
     #
-    coords = contour.get_control_points()
-    num_pts = len(coords)
-    points = vtk.vtkPoints()
-    vertices = vtk.vtkCellArray()
-    for pt in coords:
-        pid = points.InsertNextPoint(pt)
-        vertices.InsertNextCell(1)
-        vertices.InsertCellPoint(pid)
-    #_for pt in coords
-    points_pd = vtk.vtkPolyData()
-    points_pd.SetPoints(points)
-    points_pd.SetVerts(vertices)
-    mapper = vtk.vtkPolyDataMapper()
-    mapper.SetInputData(points_pd)
-    actor = vtk.vtkActor()
-    actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(1.0, 0.0, 0.0)
-    actor.GetProperty().SetPointSize(5)
+    try:
+        coords = contour.get_control_points()
+        num_pts = len(coords)
+        points = vtk.vtkPoints()
+        vertices = vtk.vtkCellArray()
+        for pt in coords:
+            pid = points.InsertNextPoint(pt)
+            vertices.InsertNextCell(1)
+            vertices.InsertCellPoint(pid)
+        #_for pt in coords
+        points_pd = vtk.vtkPolyData()
+        points_pd.SetPoints(points)
+        points_pd.SetVerts(vertices)
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInputData(points_pd)
+        actor = vtk.vtkActor()
+        actor.SetMapper(mapper)
+        actor.GetProperty().SetColor(1.0, 0.0, 0.0)
+        actor.GetProperty().SetPointSize(5)
+    except:
+        pass
     # renderer.AddActor(actor)
 
 def display(renderer_win):

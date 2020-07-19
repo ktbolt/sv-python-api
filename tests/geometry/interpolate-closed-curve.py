@@ -1,8 +1,10 @@
 from pathlib import Path
 import sv
+import sys
 import vtk
-import graphics as gr
 import sv_contour 
+sys.path.insert(1, '../graphics/')
+import graphics as gr
 
 win_width = 500
 win_height = 500
@@ -19,7 +21,7 @@ print("contour_polydata type: " + str(type(contour_polydata)))
 ## Interpolate a contour.
 int_polydata = sv.geometry.interpolate_closed_curve(polydata=contour_polydata, number_of_points=4)
 print("int_polydata type: " + str(type(int_polydata)))
-gr.add_geom(renderer, int_polydata, color=[0.5, 0.0, 0.0])
+gr.add_geometry(renderer, int_polydata, color=[0.5, 0.0, 0.0])
 
 
 ## Show geometry.

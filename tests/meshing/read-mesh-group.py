@@ -13,7 +13,8 @@ import graphics as gr
 home = str(Path.home())
 
 ## Demo project tests.
-if False:
+demo_project = False
+if demo_project:
     project_name = "DemoProject"
     mesh_name = "demo"
     mesh_name = "demo-sphere-refine"
@@ -51,7 +52,10 @@ print("Options ... ")
 #sys.exit(0)
 
 ## Set wall face IDs.
-face_ids = [1, 2]
+if demo_project:
+    face_ids = [1, 2]
+else:
+    face_ids = [1]
 mesher.set_walls(face_ids)
 
 ## Generate the mesh. 

@@ -19,7 +19,7 @@ import vtk
 #
 model_name = "demo"
 model_group = sv.dmg.get_model(model_name)
-num_models = model_group.number_of_models()
+num_models = model_group.get_num_models()
 print("Number of models: {0:d}".format(num_models))
 
 ## Get the model for the 0th time step.

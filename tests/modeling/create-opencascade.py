@@ -16,7 +16,7 @@ center = [0.0, 0.0, 0.0]
 axis = [0.0, 0.0, 1.0]
 radius = 1.5
 length = 10.0
-cyl = modeler.cylinder(radius, length, center, axis)
+cyl = modeler.cylinder(center, axis, radius, length)
 polydata = cyl.get_polydata() 
 
 cyl.write(file_name="cylinder-opencascade", format="brep") 
