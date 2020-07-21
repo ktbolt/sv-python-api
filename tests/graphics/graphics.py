@@ -244,6 +244,9 @@ def display(renderer_win):
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
     interactor.SetRenderWindow(renderer_win)
+    # Set the window title.
+    renderer_win.Render()
+    renderer_win.SetWindowName("SV Python API")
     interactor.Start()
 
 def add_geometry(renderer, polydata, color=[1.0, 1.0, 1.0], wire=False, edges=False):
@@ -291,8 +294,8 @@ def init_graphics(win_width, win_height):
     renderer_win.AddRenderer(renderer)
     renderer.SetBackground(0.8, 0.8, 0.8)
     renderer_win.SetSize(win_width, win_height)
-    renderer_win.Render()
-    renderer_win.SetWindowName("SV Python API")
+    #renderer_win.Render()
+    #renderer_win.SetWindowName("SV Python API")
     return renderer, renderer_win 
 
 
