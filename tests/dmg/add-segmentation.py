@@ -1,5 +1,4 @@
-'''
-Test adding a segmentation to the SV Data Manager.
+''' Test adding a segmentation to the SV Data Manager.
 
 This is tested using the Demo Project.
 '''
@@ -13,13 +12,13 @@ import sv
 home = str(Path.home())
 file_name = home + "/SimVascular/DemoProject/Segmentations/aorta.ctgr"
 print("Read SV ctgr file: {0:s}".format(file_name))
-aorta_segmentations = sv.segmentation.Group(file_name)
-num_segs = aorta_segmentations.number_of_segmentations()
+seg_series = sv.segmentation.Series(file_name)
+num_segs = seg_series.num_segmentations(time=0)
 print("Number of segmentations: {0:d}".format(num_segs))
 segmentations = []
 for i in range(num_segs):
     #print("---------- segmentation {0:d} ----------".format(i))
-    segmentation = aorta_segmentations.get_segmentation(i)
+    segmentation = aorta_segmentations.get_segmentation(i, time=0)
     segmentations.append(segmentation)
 
 ## Add the Python segmentation objects under the SV Data Manager 'Segmentations' nodes

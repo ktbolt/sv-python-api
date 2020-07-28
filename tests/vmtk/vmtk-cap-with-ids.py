@@ -1,5 +1,9 @@
+''' Test capping a PolyData surface.
+'''
 import sv
+import sys
 import vtk
+sys.path.insert(1, '../graphics/')
 import graphics as gr
 
 win_width = 500
@@ -7,8 +11,8 @@ win_height = 500
 renderer, renderer_window = gr.init_graphics(win_width, win_height)
 
 # Create a modeler.
-kernel = sv.solid.Kernel.POLYDATA
-modeler = sv.solid.Modeler(kernel)
+kernel = sv.modeling.Kernel.POLYDATA
+modeler = sv.modeling.Modeler(kernel)
 
 # Read cylinder geometry.
 print("Read surface model file ...")
@@ -50,8 +54,8 @@ for i in range(num_arrays):
       print("  IDs: {0:s}".format(str(ids)))
 
 # Add geometry to vtk renderer.
-gr.add_geom(renderer, cylinder_polydata, color=[0.5, 0.0, 0.0], wire=True)
-gr.add_geom(renderer, capped_cylinder, color=[0.0, 1.0, 0.0], wire=False)
+gr.add_geometry(renderer, cylinder_polydata, color=[0.5, 0.0, 0.0], wire=True)
+gr.add_geometry(renderer, capped_cylinder, color=[0.0, 1.0, 0.0], wire=False)
 
 ## Show geometry.
 #

@@ -10,7 +10,7 @@ import sv
 
 #help(sv.modeling.Model)
 
-#help(sv.modeling.Group)
+#help(sv.modeling.Series)
 
 #help(sv.modeling.Kernel)
 

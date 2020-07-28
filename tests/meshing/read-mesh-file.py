@@ -1,5 +1,4 @@
-'''
-This scipt tests reading in an SV Mesh from an .msh file.
+''' This scipt tests reading in an SV Mesh from an .msh file.
 '''
 from pathlib import Path
 import sv
@@ -29,15 +28,15 @@ else:
 
 file_name = home + "/SimVascular/" + project_name + "/Meshes/" + mesh_name + ".msh"
 print("Read SV msh file: {0:s}".format(file_name))
-mesh_group = sv.meshing.Group(file_name)
-num_meshes = mesh_group.get_num_meshes()
-print("Number of meshes: {0:d}".format(num_meshes))
+mesh_series = sv.meshing.Series(file_name)
+num_times = mesh_series.get_num_times()
+print("Number of meshes: {0:d}".format(num_times))
 
 ## Get a mesh for time 0.
 #
 # Meshing parameter options are read from the .msh file.
 #
-mesher, options = mesh_group.get_mesh(0)
+mesher, options = mesh_series.get_mesh(0)
 face_ids = mesher.get_model_face_ids()
 print("Mesh face IDs: " + str(face_ids))
 

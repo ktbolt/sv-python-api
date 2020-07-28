@@ -8,7 +8,7 @@ import sv
 
 #help(sv.meshing.Kernel)
 
-#help(sv.meshing.Group)
+#help(sv.meshing.Series)
 
 #help(sv.meshing.TetGen)
 

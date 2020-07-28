@@ -14,11 +14,11 @@ file_name = home + "/SimVascular/DemoProject/Models/cascade-model.mdl"
 file_name = home + "/SimVascular/DemoProject/Models/parasolid-model.mdl"
 file_name = home + "/SimVascular/DemoProject/Models/demo.mdl"
 print("Read SV mdl file: {0:s}".format(file_name))
-group = sv.modeling.Group(file_name)
-num_models = group.get_num_models()
+series= sv.modeling.Series(file_name)
+num_models = series.get_num_times()
 print("  Number of models: {0:d}".format(num_models))
 
 ## Write group.
 file_name = "group-write-test.mdl"
-group.write(file_name)
+series.write(file_name)
 

@@ -28,8 +28,8 @@ else:
 
 file_name = home + "/SimVascular/" + project_name + "/Meshes/" + mesh_name + ".msh"
 print("Read SV msh file: {0:s}".format(file_name))
-mesh_group = sv.meshing.Group(file_name)
-num_meshes = mesh_group.get_num_meshes()
+mesh_group = sv.meshing.Series(file_name)
+num_meshes = mesh_group.get_num_times()
 print("Number of meshes: {0:d}".format(num_meshes))
 
 ## Write a mesh group.
