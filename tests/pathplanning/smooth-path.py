@@ -7,15 +7,15 @@ from pathlib import Path
 sys.path.insert(1, '../graphics/')
 import graphics as gr
 
-## Create a PathGroup from an SV file.
+## Create a PathSeries from an SV file.
 #
 home = str(Path.home())
 file_name = home+"/Simvascular/DemoProject/Paths/aorta.pth"
-aorta_group = sv.pathplanning.Group(file_name)
-print("Number of paths: {0:d}".format(aorta_group.get_num_paths()))
-print("Method: {0:s}".format(aorta_group.get_method()))
+path_series = sv.pathplanning.Series(file_name)
+print("Number of paths: {0:d}".format(path_series.get_num_paths()))
+print("Method: {0:s}".format(path_series.get_method()))
 print("Aorta path:")
-aorta_path = aorta_group.get_path(0)
+aorta_path = path_series.get_path(0)
 control_points = aorta_path.get_control_points()
 print("  Number of control points: {0:d}".format(len(control_points)))
 curve_points = aorta_path.get_curve_points()

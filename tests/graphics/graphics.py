@@ -97,7 +97,7 @@ def create_segmentation_geometry(renderer, segmentation, color=[1.0, 1.0, 1.0]):
     actor.GetProperty().SetPointSize(5)
     # renderer.AddActor(actor)
 
-def create_path_geometry(renderer, path, line_color=[0.0, 0.6, 0.0], marker_color=[1.0,0.0,0.0]):
+def create_path_geometry(renderer, path, line_color=[0.0, 0.6, 0.0], marker_color=[1.0,0.0,0.0], show_points=False):
     ''' Create geometry for the path curve and control points.
     '''
     coords = path.get_curve_points()
@@ -126,6 +126,26 @@ def create_path_geometry(renderer, path, line_color=[0.0, 0.6, 0.0], marker_colo
     actor.GetProperty().SetColor(line_color[0], line_color[1], line_color[2])
     renderer.AddActor(actor)
 
+    ## Show curve points.
+    if show_points:
+        points = vtk.vtkPoints()
+        vertices = vtk.vtkCellArray()
+        for pt in coords:
+            pid = points.InsertNextPoint(pt)
+            vertices.InsertNextCell(1)
+            vertices.InsertCellPoint(pid)
+        #_for pt in coords
+        points_pd = vtk.vtkPolyData()
+        points_pd.SetPoints(points)
+        points_pd.SetVerts(vertices)
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInputData(points_pd)
+        actor = vtk.vtkActor()
+        actor.SetMapper(mapper)
+        actor.GetProperty().SetColor(0.0, 0.0, 1.0)
+        actor.GetProperty().SetPointSize(5)
+        renderer.AddActor(actor)
+
     ## Add control points.
     coords = path.get_control_points()
     num_pts = len(coords)
@@ -144,7 +164,7 @@ def create_path_geometry(renderer, path, line_color=[0.0, 0.6, 0.0], marker_colo
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(marker_color[0], marker_color[1], marker_color[2])
-    actor.GetProperty().SetPointSize(5)
+    actor.GetProperty().SetPointSize(8)
     renderer.AddActor(actor)
 
 #_create_path_geometry(renderer, path)

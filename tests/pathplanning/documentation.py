@@ -1,14 +1,15 @@
 # Test the 'pathplannning' module documentation.
 #
 import sv
+import pydoc
 
 #help(dir(sv))
 
-help(sv.pathplanning)
+#help(sv.pathplanning)
 
-#help(sv.pathplanning.Path)
+#print(dir(sv.pathplanning.PathFrame))
 
-#help(sv.pathplanning.Group)
+#help(sv.pathplanning.PathFrame)
 
-#help(sv.pathplanning.SubdivisionMethod)
+help(sv.pathplanning.Series)
 

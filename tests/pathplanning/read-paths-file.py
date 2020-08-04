@@ -44,6 +44,7 @@ renderer, renderer_window = gr.init_graphics(win_width, win_height)
 
 # Create path geometry.
 gr.create_path_geometry(renderer, aorta_path)
+#gr.create_path_geometry(renderer, aorta_path, show_points=True)
 
 # Display window.
 gr.display(renderer_window)

@@ -45,4 +45,16 @@ print("Number of control points: {0:d}".format(len(control_points)))
 for i,pt in enumerate(control_points):
     print("i: {0:d}  point: {1:s}".format(i+1, str(pt)))
 
+## Create renderer and graphics window.
+win_width = 500
+win_height = 500
+renderer, renderer_window = gr.init_graphics(win_width, win_height)
+
+# Create path geometry.
+gr.create_path_geometry(renderer, path)
+
+# Display window.
+gr.display(renderer_window)
+
+
 
