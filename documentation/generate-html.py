@@ -4,6 +4,8 @@ import sv
 import inspect
 from pprint import pprint
 
+## Define some html tags.
+#
 METHOD_LEGEND = '<legend style="font-size:20px; text-align:left"> <b> Methods </b> </legend> \n'
 DATA_LEGEND = '<legend style="font-size:20px; text-align:left"> <b> Data </b> </legend> \n'
 BREAK = '<br>\n'
@@ -38,6 +40,9 @@ def write_methods_desc(fp, methods):
     for name, data in methods: 
         print(">>> method: {0:s} {1:s} ".format(name, str(data)))
         doc = data.__doc__
+        if doc == None:
+            print("**** WARNING: No documentation found.")
+            continue
         func_desc = doc[:doc.find(")")+1]
         print("    func_desc: '{0:s}' ".format(func_desc))
         doc = doc.replace(func_desc, "<strong>" + func_desc + "</strong>")
@@ -122,6 +127,7 @@ def write_module_doc(name, module):
             #    print(meth_data.__doc__)
 
 write_module_doc("pathplanning", sv.pathplanning)
+write_module_doc("segmentation", sv.segmentation)
 
 #print(sv.segmentation.Circle.__doc__)
 #print(sv.segmentation.Circle.get_center.__doc__)
