@@ -6,11 +6,33 @@ from pprint import pprint
 
 ## Define some html tags.
 #
+FUNCTION_LEGEND = '<legend style="font-size:20px; text-align:left"> <b> Functions </b> </legend> \n'
 METHOD_LEGEND = '<legend style="font-size:20px; text-align:left"> <b> Methods </b> </legend> \n'
 DATA_LEGEND = '<legend style="font-size:20px; text-align:left"> <b> Data </b> </legend> \n'
 BREAK = '<br>\n'
 PARAGRAPH_START = '<pre class="PythonMethodsPre">'
 PARAGRAPH_END = '</pre> \n'
+
+def write_function_desc(fp, functions, show_header=True):
+    '''Write html for functions.
+    '''
+    if len(functions) == 0:
+        return
+    if show_header:
+        fp.write(FUNCTION_LEGEND)
+
+    for name, data in functions:
+        print(">>> function: {0:s} {1:s} ".format(name, str(data)))
+        doc = "   " + data.__doc__
+        fp.write(PARAGRAPH_START)
+        fp.write("<strong>" + name + "</strong>")
+        fp.write('\n')
+        fp.write(doc)
+        fp.write('\n')
+        fp.write(PARAGRAPH_END)
+        fp.write('\n')
+        fp.write('\n')
+
 
 def write_member_desc(fp, members):
     '''Write html for class member data.
@@ -43,17 +65,18 @@ def write_methods_desc(fp, methods):
         if doc == None:
             print("**** WARNING: No documentation found.")
             continue
-        func_desc = doc[:doc.find(")")+1]
+        # Highlight the method name.
+        func_desc = doc[:doc.find("(")]
+        #func_desc = doc[:doc.find(")")+1]
         print("    func_desc: '{0:s}' ".format(func_desc))
-        doc = doc.replace(func_desc, "<strong>" + func_desc + "</strong>")
+        doc = doc.replace(func_desc, "<strong>" + func_desc + "</strong>", 1)
         #doc_list = doc.split("\n")
         #print(str(doc_list))
         #fp.write(''.join(doc_list))
         fp.write(PARAGRAPH_START)
         fp.write(doc)
         fp.write(PARAGRAPH_END)
-        fp.write('\n')
-        fp.write('\n')
+        fp.write(BREAK)
 
 def write_class_desc(fp, name, data):
     '''Write html for a class.
@@ -63,9 +86,11 @@ def write_class_desc(fp, name, data):
     print('================= class {0:s} {1:s} =========================='.format(name, str(data)))
     doc = inspect.getdoc(data)
     func_loc = doc.find(name+"(")
+    # Highlight the method name.
     if func_loc != -1:
-        func_desc = doc[:doc.find(")")+1]
-        doc = doc.replace(func_desc, "<strong>" + func_desc + "</strong>")
+        func_desc = doc[:doc.find("(")]
+        #func_desc = doc[:doc.find(")")+1]
+        doc = doc.replace(func_desc, "<strong>" + func_desc + "</strong>", 1)
     else:
         func_desc = ""
 
@@ -104,6 +129,8 @@ def write_module_doc(name, module):
     print('\n')
     #write_module_desc(fp, module)
 
+    ## Get class and data members.
+    #
     for key, data in inspect.getmembers(module, inspect.isclass):
         #print('\n')
         #print('================= class {0:s} {1:s} =========================='.format(key, str(data)))
@@ -112,24 +139,28 @@ def write_module_doc(name, module):
         fp = open(file_name, "w")
         write_class_desc(fp, key, data)
 
-        for meth_name, meth_data in inspect.getmembers(data):
-            if meth_name.startswith('__'):
-                continue
-            is_method = True
-            if ("<method" not in str(meth_data)):
-                is_method = False
-                continue
-            #print('\n')
-            #print('----------------- {0:s} --------------------------'.format(meth_name))
-            #print('data: {0:s}'.format(str(meth_data)))
-            #print('is_method: {0:s}'.format(str(is_method)))
-            #if is_method:
-            #    print(meth_data.__doc__)
+    ## Get functions.
+    #
+    function_list = []
+    for key, data in inspect.getmembers(module, inspect.isroutine):
+        print('\n')
+        print('================= function {0:s} {1:s} =========================='.format(key, str(data)))
+        function_list.append( (key, data) )
 
+    file_name = name + "_" + "functions" + ".html"
+    fp = open(file_name, "w")
+    if name == "dmg":
+        show_header = False
+    else:
+        show_header = True 
+
+    write_function_desc(fp, function_list, show_header)
+
+write_module_doc("dmg", sv.dmg)
+'''
+write_module_doc("meshing", sv.meshing)
+write_module_doc("modeling", sv.modeling)
 write_module_doc("pathplanning", sv.pathplanning)
 write_module_doc("segmentation", sv.segmentation)
-
-#print(sv.segmentation.Circle.__doc__)
-#print(sv.segmentation.Circle.get_center.__doc__)
-#print(class_names)
+'''
 

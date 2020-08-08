@@ -9,6 +9,10 @@ import graphics as gr
 # Create a modeler.
 oc_modeler = sv.modeling.Modeler(sv.modeling.Kernel.OPENCASCADE)
 modeler = sv.modeling.Modeler(sv.modeling.Kernel.POLYDATA)
+print("Modeler type: " + str(type(modeler)))
+print("  kernel: " + modeler.kernel)
+print("OC Modeler type: " + str(oc_modeler))
+print("  kernel: " + oc_modeler.kernel)
 
 ## Create a box.
 print("Create a box ...")

@@ -6,7 +6,7 @@ import sv
 
 #help(sv.meshing)
 
-#help(sv.meshing.Kernel)
+help(sv.meshing.Kernel)
 
 #help(sv.meshing.Series)
 
@@ -24,6 +24,6 @@ import sv
 
 #help(sv.meshing.TetGenOptions.radius_meshing_scale)
 
-help(sv.meshing.TetGenOptions.sphere_refinement)
+#help(sv.meshing.TetGenOptions.sphere_refinement)
 
 

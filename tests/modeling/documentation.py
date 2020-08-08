@@ -4,7 +4,7 @@ import sv
 
 #help(dir(sv))
 
-#help(sv.modeling)
+help(sv.modeling)
 
 #help(sv.modeling.Modeler)
 
