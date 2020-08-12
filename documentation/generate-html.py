@@ -33,7 +33,6 @@ def write_function_desc(fp, functions, show_header=True):
         fp.write('\n')
         fp.write('\n')
 
-
 def write_member_desc(fp, members):
     '''Write html for class member data.
     '''
@@ -86,8 +85,10 @@ def write_class_desc(fp, name, data):
     print('================= class {0:s} {1:s} =========================='.format(name, str(data)))
     doc = inspect.getdoc(data)
     func_loc = doc.find(name+"(")
+    #print('doc: {0:s}'.format(doc))
+    #print('func_loc: {0:d} '.format(func_loc))
     # Highlight the method name.
-    if func_loc != -1:
+    if func_loc == 0:
         func_desc = doc[:doc.find("(")]
         #func_desc = doc[:doc.find(")")+1]
         doc = doc.replace(func_desc, "<strong>" + func_desc + "</strong>", 1)
@@ -149,15 +150,17 @@ def write_module_doc(name, module):
 
     file_name = name + "_" + "functions" + ".html"
     fp = open(file_name, "w")
-    if name == "dmg":
+    if name in "[dmg,geometry,vmtk]":
         show_header = False
     else:
         show_header = True 
 
     write_function_desc(fp, function_list, show_header)
 
-write_module_doc("dmg", sv.dmg)
+write_module_doc("vmtk", sv.vmtk)
 '''
+write_module_doc("dmg", sv.dmg)
+write_module_doc("geometry", sv.geometry)
 write_module_doc("meshing", sv.meshing)
 write_module_doc("modeling", sv.modeling)
 write_module_doc("pathplanning", sv.pathplanning)

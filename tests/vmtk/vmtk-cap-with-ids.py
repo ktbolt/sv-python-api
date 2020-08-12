@@ -53,9 +53,19 @@ for i in range(num_arrays):
       print("  Number of IDs: {0:d}".format(len(ids)))
       print("  IDs: {0:s}".format(str(ids)))
 
+## Write the capped surface.
+file_name = "cylinder-surface-capped-with-ids.vtp"
+writer = vtk.vtkXMLPolyDataWriter()
+writer.SetFileName(file_name)
+writer.SetInputData(capped_cylinder)
+writer.Update()
+writer.Write()
+
 # Add geometry to vtk renderer.
 gr.add_geometry(renderer, cylinder_polydata, color=[0.5, 0.0, 0.0], wire=True)
 gr.add_geometry(renderer, capped_cylinder, color=[0.0, 1.0, 0.0], wire=False)
+
+
 
 ## Show geometry.
 #

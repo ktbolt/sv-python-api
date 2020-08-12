@@ -3,6 +3,8 @@ Test vmtk.cap() method.
 '''
 import sv
 import vtk
+import sys
+sys.path.insert(1, '../graphics/')
 import graphics as gr
 
 win_width = 500
@@ -10,8 +12,8 @@ win_height = 500
 renderer, renderer_window = gr.init_graphics(win_width, win_height)
 
 # Create a modeler.
-kernel = sv.solid.Kernel.POLYDATA
-modeler = sv.solid.Modeler(kernel)
+kernel = sv.modeling.Kernel.POLYDATA
+modeler = sv.modeling.Modeler(kernel)
 
 # Read cylinder geometry.
 print("Read surface model file ...")
@@ -49,9 +51,17 @@ for i in range(num_arrays):
       print("  Number of IDs: {0:d}".format(len(ids)))
       print("  IDs: {0:s}".format(str(ids)))
 
+## Write the capped surface.
+file_name = "cylinder-surface-capped.vtp"
+writer = vtk.vtkXMLPolyDataWriter()
+writer.SetFileName(file_name)
+writer.SetInputData(capped_cylinder)
+writer.Update()
+writer.Write()
+
 # Add geometry to vtk renderer.
 #gr.add_geom(renderer, cylinder_polydata, color=[0.5, 0.0, 0.0], wire=True)
-gr.add_geom(renderer, capped_cylinder, color=[0.0, 1.0, 0.0], wire=True)
+gr.add_geometry(renderer, capped_cylinder, color=[0.0, 1.0, 0.0], wire=True)
 
 ## Show geometry.
 #
