@@ -15,12 +15,19 @@ modeler = sv.modeling.Modeler(sv.modeling.Kernel.POLYDATA)
 print("Read modeling model file ...")
 file_name = "cylinder.brep"
 file_name = "cylinder.stl"
+file_name = "loft-test-interpolate.vtp"
 model = modeler.read(file_name)
 print("Model type: " + str(type(model)))
 
 ## Compute boundary faces.
 face_ids = model.compute_boundary_faces(angle=60.0)
 print("Model face IDs: " + str(face_ids))
+
+## Write the model.
+if False:
+    file_name = "model-written"
+    file_format = "vtp"
+    model.write(file_name=file_name, format=file_format)
 
 ## Create renderer and graphics window.
 win_width = 500

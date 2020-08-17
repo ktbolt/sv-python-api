@@ -27,8 +27,8 @@ def read_contours():
     file_name = home + "/SimVascular/DemoProject/Segmentations/aorta.ctgr"
     #file_name = home + "/SimVascular/DemoProject/Segmentations/aorta.ctg"
     print("Read SV ctgr file: {0:s}".format(file_name))
-    contour_group = sv.segmentation.Group(file_name)
-    num_conts = contour_group.number_of_segmentations()
+    contour_group = sv.segmentation.Series(file_name)
+    num_conts = contour_group.get_num_segmentations()
     contours = []
 
     for i in range(num_conts):

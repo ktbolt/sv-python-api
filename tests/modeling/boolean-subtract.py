@@ -20,7 +20,7 @@ print("  Box: num nodes: {0:d}".format(box_pd.GetNumberOfPoints()))
 
 ## Create a cylinder.
 print("Create a cylinder ...") 
-center = [0.0, 0.0, 1.0]
+center = [0.0, 0.0, -3.0]
 axis = [0.0, 0.0, 1.0]
 radius = 1.5
 length = 10.0
@@ -28,14 +28,24 @@ cylinder = modeler.cylinder(center, axis, radius, length)
 print("  Cylinder type: " + str(type(cylinder)))
 cylinder_pd = cylinder.get_polydata() 
 print("  Cylinder: num nodes: {0:d}".format(cylinder_pd.GetNumberOfPoints()))
+#
+radius = 0.5
+center = [0.0, 0.0, 0.0]
+cylinder_small = modeler.cylinder(center, axis, radius, length)
 
 ## Subtract the cylinder from the box.
 print("Subtract cylinder from box ...")
-result = modeler.subtract(main=box, subtract=cylinder)
-#result = modeler.subtract(main=cylinder, subtract=box)
+#result = modeler.subtract(main=box, subtract=cylinder)
+result = modeler.subtract(main=cylinder, subtract=cylinder_small)
+
 print("  Subtract result type: " + str(type(result)))
 result_pd = result.get_polydata()
 print("  Subtract result: num nodes: {0:d}".format(result_pd.GetNumberOfPoints()))
+
+## Write the model.
+file_name = "box-minus-cylinder-partial"
+file_format = "vtp"
+result.write(file_name=file_name, format=file_format)
 
 ## Create renderer and graphics window.
 win_width = 500
