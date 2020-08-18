@@ -29,14 +29,17 @@ print("  Cylinder type: " + str(type(cylinder)))
 cylinder_pd = cylinder.get_polydata() 
 print("  Cylinder: num nodes: {0:d}".format(cylinder_pd.GetNumberOfPoints()))
 #
+## Create a smaller cylinder.
 radius = 0.5
 center = [0.0, 0.0, 0.0]
 cylinder_small = modeler.cylinder(center, axis, radius, length)
 
 ## Subtract the cylinder from the box.
 print("Subtract cylinder from box ...")
-#result = modeler.subtract(main=box, subtract=cylinder)
-result = modeler.subtract(main=cylinder, subtract=cylinder_small)
+result = modeler.subtract(main=box, subtract=cylinder)
+
+## Subtract the cylinder from the smaller cylinder.
+#result = modeler.subtract(main=cylinder, subtract=cylinder_small)
 
 print("  Subtract result type: " + str(type(result)))
 result_pd = result.get_polydata()
