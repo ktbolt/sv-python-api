@@ -96,7 +96,7 @@ class TestProject(object):
         print(" ")
         print("Get path group {0:s}: ".format(path_name))
         path_group = project.get_path(path_name)
-        print("  Number of paths: {0:d}".format(path_group.get_num_paths()))
+        print("  Number of paths: {0:d}".format(path_group.get_num_times()))
         print("  Method: {0:s}".format(path_group.get_method()))
         print(" ")
         path = path_group.get_path(0)
@@ -112,7 +112,7 @@ class TestProject(object):
         print(" ")
         print("Get {0:s} segmentation ... ".format(seg_name))
         segmentation = project.get_segmentation(seg_name)
-        num_conts = segmentation.number_of_segmentations()
+        num_conts = segmentation.get_num_times()
         print("  Number of contours: {0:d}".format(num_conts))
         for i in range(num_conts):
             contour = segmentation.get_segmentation(i)
